@@ -8,7 +8,8 @@ db = connector.connect(
 
 cursor = db.cursor()
 
-import json, re
+import json, re, sys
+sys.path.append("modules")
 data_resorts = []
 data_mrts = []
 with open('taipei-attractions.json', 'r') as file:
@@ -52,11 +53,11 @@ for i, item in enumerate(data_mrts):
   item["id"] = i + 1
 
 # 加上 mrt_id
-for resort in data_resorts:
-  for mrt in data_mrts:
-    if resort["mrt"] == mrt["mrt"]:
-      resort["mrt_id"] = mrt["id"]
-  resort.pop("mrt")
+# for resort in data_resorts:
+#   for mrt in data_mrts:
+#     if resort["mrt"] == mrt["mrt"]:
+#       resort["mrt_id"] = mrt["id"]
+#   resort.pop("mrt")
 
 def show_json(data):
   with open('test.json', 'w', encoding="utf-8") as file:
@@ -71,10 +72,10 @@ def show_json(data):
 show_json(data_resorts)
 
 for resort in data_resorts:
-  sql = "INSERT into resorts(id, name, category, description, address, transport, mrt_id, lat, lng, images) " \
+  sql = "INSERT into resorts(id, name, category, description, address, transport, mrt, lat, lng, images) " \
         "value(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
   
-  value = (resort["id"], resort["name"], resort["category"], resort["description"], resort["address"], resort["transport"], resort["mrt_id"], resort["lat"], resort["lng"], json.dumps(resort["images"]),)
+  value = (resort["id"], resort["name"], resort["category"], resort["description"], resort["address"], resort["transport"], resort["mrt"], resort["lat"], resort["lng"], json.dumps(resort["images"]),)
 
   cursor.execute(sql, value)
 else:
