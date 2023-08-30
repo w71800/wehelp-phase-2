@@ -1,7 +1,5 @@
 # 暫時可視化 JSON 用
 import sys, json, copy
-sys.path.append("modules")
-import tools
 
 from flask import *
 app=Flask(__name__)
@@ -18,19 +16,20 @@ cursor = db.cursor()
 
 # 放入一個未處理的 row tuple 轉換成 dict
 def reform_attraction(raw):
-	id, name, category, description, address, lat, images, transport, lng, mrt = raw
+	id, name, category, description, address, lat, images, transport, lng, mrt, page = raw
+		
 	return {
-			"id": id,
-			"name": name,
-			"category": category,
-			"description": description,
-			"address": address,
-			"transport": transport,
-			"mrt": mrt,
-			"lat": lat,
-			"lng": lng,
-			"images": json.loads(images)
-		}
+		"id": id,
+		"name": name,
+		"category": category,
+		"description": description,
+		"address": address,
+		"transport": transport,
+		"mrt": mrt,
+		"lat": lat,
+		"lng": lng,
+		"images": json.loads(images),
+	}
 # 將原始資料整理成每 12 個一組 [{page, data}, {page, data}]
 def folding_data(src_container, length = 12):
 	page_count = 0
@@ -89,52 +88,44 @@ def api_attractions():
 			"message": "未輸入頁數"
 		}
 		return make_response(jsonify(response), 400)
-	
-	else:
-		try:
-			response = None
-			# 有關鍵字就找關鍵字，找完結果並分頁
-			if keyword is not None:
-				sql = "SELECT * from resorts WHERE name LIKE (%s) or mrt = (%s)"
-				value = ( '%' + keyword + '%', keyword, )
-				cursor.execute(sql, value)
-				result = cursor.fetchall()
 
-				keyword_container = []
-				for item in result:
-					dict = reform_attraction(item)
-					keyword_container.append(dict)
-				else:
-					response = {
-						"nextPage": page + 1, 
-						"data": folding_data(keyword_container)[page]["data"]
-					}
-			# 沒有的話就直接分頁
-			else:
-				sql = "SELECT * from resorts"
-				cursor.execute(sql)
-				result = cursor.fetchall()
+	try:
+		response = None
+		if keyword is None:
+			sql = "SELECT * from resorts LIMIT 12 OFFSET %s"
+			value = (12 * page, )
+		else:
+			sql = "SELECT * FROM resorts WHERE name LIKE (%s) or mrt = (%s) LIMIT 12 OFFSET %s"
+			value = ('%' + keyword + '%', keyword, 12 * page, )
 
-				data_container = []
-				for item in result:
-					dict = reform_attraction(item)
-					data_container.append(dict)
-				else:
-					response = {
-						"nextPage": page + 1,
-						"data": folding_data(data_container)[page]["data"]
-					}
-
-			return make_response(jsonify(response), 200)
-		
-		except Exception as e:
+		cursor.execute(sql, value)
+		result = cursor.fetchall()
+		if len(result) == 0:
 			response = {
 				"error": True, 
 				"message": "伺服器發生內部錯誤"
-				}
-			print(e)
+			}
 			return make_response(jsonify(response), 500)
+		
+		data_container = []
+		for item in result:
+			dict = reform_attraction(item)
+			data_container.append(dict)
+		else:
+			response = {
+				"nextPage": page + 1,
+				"data": data_container
+			}
 
+		return make_response(jsonify(response), 200)
+		
+	except Exception as e:
+		response = {
+			"error": True, 
+			"message": "伺服器發生內部錯誤"
+			}
+		print(e)
+		return make_response(jsonify(response), 500)
 
 # 選取 id 的模式
 @app.route("/api/attraction/<attractionId>")
@@ -154,20 +145,62 @@ def api_attraction＿id(attractionId):
 		
 		else:
 			response = {
-				"data": reform_attraction(result[0])
+				"data": reform_attraction(result[0], False)
 			}
 			return make_response(jsonify(response), 200)
 		
 	except Exception as e:
 		response = { 
 			"error": True, 
-			"message": "伺服器發生內部錯誤" 
+			"message": "伺服器內部出錯"
 		}
 		return make_response(jsonify(response), 500)
 
 # 抓出所有 MRT 的資料，並按照景點數量由大到小排序
 @app.route("/api/mrts")
 def api_mrts():
-	pass
+	response = None
+	try:
+		sql = "SELECT name, mrt from resorts"
+		cursor.execute(sql)
+		result = cursor.fetchall()
+
+		dict = {}
+		for item in result:
+			name, mrt = item
+			if dict.get(mrt) is None:
+				dict[mrt] = []
+				dict[mrt].append(name)
+			else:
+				dict[mrt].append(name)
+		else:
+			# [{mrt: "", resorts: [...],}]
+			list = []
+			for mrt, resorts in dict.items():
+				if mrt == "empty":
+					continue
+				list.append({
+					"mrt": mrt,
+					"resorts": resorts,
+					"length": len(resorts)
+				})
+			else:
+				# 根據 resorts 數排序
+				list.sort(key = lambda item : len(item["resorts"]), reverse = True)
+		
+		result_container = [ item["mrt"] for item in list ]
+		response = {
+			"data": result_container
+		}
+		return make_response(jsonify(response), 200)
+	
+	except Exception as e:
+		response = {
+				"error": True, 
+				"message": "伺服器發生內部錯誤"
+				}
+		return make_response(jsonify(response), 500)
+		
+
 
 app.run(host="0.0.0.0", port=3000, debug=True)
