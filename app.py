@@ -145,7 +145,7 @@ def api_attraction＿id(attractionId):
 		
 		else:
 			response = {
-				"data": reform_attraction(result[0], False)
+				"data": reform_attraction(result[0])
 			}
 			return make_response(jsonify(response), 200)
 		
@@ -154,6 +154,7 @@ def api_attraction＿id(attractionId):
 			"error": True, 
 			"message": "伺服器內部出錯"
 		}
+		print(e)
 		return make_response(jsonify(response), 500)
 
 # 抓出所有 MRT 的資料，並按照景點數量由大到小排序
