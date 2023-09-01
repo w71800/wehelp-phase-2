@@ -158,31 +158,3 @@ def api_mrts():
 
 
 app.run(host="0.0.0.0", port=3000, debug=True)
-
-# def test():
-# 	sql = "SELECT name, mrt from resorts"
-# 		cursor.execute(sql)
-# 		result = cursor.fetchall()
-
-# 		dict = {}
-# 		for item in result:
-# 			name, mrt = item
-# 			if dict.get(mrt) is None:
-# 				dict[mrt] = []
-# 				dict[mrt].append(name)
-# 			else:
-# 				dict[mrt].append(name)
-# 		else:
-# 			# [{mrt: "", resorts: [...],}]
-# 			list = []
-# 			for mrt, resorts in dict.items():
-# 				if mrt == "empty":
-# 					continue
-# 				list.append({
-# 					"mrt": mrt,
-# 					"resorts": resorts,
-# 					"length": len(resorts)
-# 				})
-# 			else:
-# 				# 根據 resorts 數排序
-# 				list.sort(key = lambda item : len(item["resorts"]), reverse = True)
