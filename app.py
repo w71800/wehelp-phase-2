@@ -1,17 +1,21 @@
-# 暫時可視化 JSON 用
-import sys, json, copy
+import json
 
 from flask import *
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 import mysql.connector as connector
-db = connector.connect(
-	host="localhost",
-	user="root",
-	password="0000",
-	database="wehelp"
-)
+dbconfig = {
+	"host": "localhost",
+	"user": "root",
+	"password": "0000",
+	"database": "wehelp",
+	"pool_name": "pool",
+	"pool_size": 5
+}
+connection_pool = connector.pooling.MySQLConnectionPool(**dbconfig)
+db = connection_pool.get_connection()
+
 cursor = db.cursor()
 
 # 放入一個未處理的 row tuple 轉換成 dict
@@ -30,35 +34,6 @@ def reform_attraction(raw):
 		"lng": lng,
 		"images": json.loads(images),
 	}
-# 將原始資料整理成每 12 個一組 [{page, data}, {page, data}]
-def folding_data(src_container, length = 12):
-	page_count = 0
-	data_count = 0
-	temporary_container = copy.deepcopy(src_container)
-	data_container = []
-	single_page = {
-		"page": page_count,
-		"data": []
-	}
-
-	for i, data in enumerate(temporary_container):
-		if data_count < length:
-			single_page["data"].append(data)
-			data_count += 1
-
-		if data_count == length:
-			data_container.append(single_page)
-			page_count += 1
-			single_page = {
-				"page": page_count,
-				"data": []
-			}
-			data_count = 0
-		
-		if i + 1 == len(temporary_container):
-			data_container.append(single_page)
-	else:
-		return data_container
 		
 # Pages
 @app.route("/")
@@ -162,34 +137,12 @@ def api_attraction＿id(attractionId):
 def api_mrts():
 	response = None
 	try:
-		sql = "SELECT name, mrt from resorts"
+		sql = "SELECT mrt, count(name) from resorts GROUP BY mrt ORDER BY count(name) DESC"
 		cursor.execute(sql)
 		result = cursor.fetchall()
 
-		dict = {}
-		for item in result:
-			name, mrt = item
-			if dict.get(mrt) is None:
-				dict[mrt] = []
-				dict[mrt].append(name)
-			else:
-				dict[mrt].append(name)
-		else:
-			# [{mrt: "", resorts: [...],}]
-			list = []
-			for mrt, resorts in dict.items():
-				if mrt == "empty":
-					continue
-				list.append({
-					"mrt": mrt,
-					"resorts": resorts,
-					"length": len(resorts)
-				})
-			else:
-				# 根據 resorts 數排序
-				list.sort(key = lambda item : len(item["resorts"]), reverse = True)
-		
-		result_container = [ item["mrt"] for item in list ]
+		result_container = [ item[0] for item in result ]
+		result_container = list(filter(lambda x : x != "empty", result_container))
 		response = {
 			"data": result_container
 		}
@@ -205,3 +158,31 @@ def api_mrts():
 
 
 app.run(host="0.0.0.0", port=3000, debug=True)
+
+# def test():
+# 	sql = "SELECT name, mrt from resorts"
+# 		cursor.execute(sql)
+# 		result = cursor.fetchall()
+
+# 		dict = {}
+# 		for item in result:
+# 			name, mrt = item
+# 			if dict.get(mrt) is None:
+# 				dict[mrt] = []
+# 				dict[mrt].append(name)
+# 			else:
+# 				dict[mrt].append(name)
+# 		else:
+# 			# [{mrt: "", resorts: [...],}]
+# 			list = []
+# 			for mrt, resorts in dict.items():
+# 				if mrt == "empty":
+# 					continue
+# 				list.append({
+# 					"mrt": mrt,
+# 					"resorts": resorts,
+# 					"length": len(resorts)
+# 				})
+# 			else:
+# 				# 根據 resorts 數排序
+# 				list.sort(key = lambda item : len(item["resorts"]), reverse = True)
