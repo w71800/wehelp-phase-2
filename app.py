@@ -67,10 +67,10 @@ def api_attractions():
 	try:
 		response = None
 		if keyword is None:
-			sql = "SELECT * from resorts LIMIT 12 OFFSET %s"
+			sql = "SELECT * from resorts LIMIT 24 OFFSET %s"
 			value = (12 * page, )
 		else:
-			sql = "SELECT * FROM resorts WHERE name LIKE (%s) or mrt = (%s) LIMIT 12 OFFSET %s"
+			sql = "SELECT * FROM resorts WHERE name LIKE (%s) or mrt = (%s) LIMIT 24 OFFSET %s"
 			value = ('%' + keyword + '%', keyword, 12 * page, )
 
 		cursor.execute(sql, value)
@@ -78,17 +78,23 @@ def api_attractions():
 		if len(result) == 0:
 			response = {
 				"error": True, 
-				"message": "伺服器發生內部錯誤"
+				"message": "No matched datas have been found"
 			}
 			return make_response(jsonify(response), 500)
 		
 		data_container = []
-		for item in result:
+		next_container = []
+		for index, item in enumerate(result):
 			dict = reform_attraction(item)
-			data_container.append(dict)
+			if index < 12:
+				data_container.append(dict)
+			else:
+				next_container.append(dict)
+			
 		else:
+			next_page = None if len(next_container) == 0 else page + 1
 			response = {
-				"nextPage": page + 1,
+				"nextPage": next_page,
 				"data": data_container
 			}
 
