@@ -67,10 +67,10 @@ def api_attractions():
 	try:
 		response = None
 		if keyword is None:
-			sql = "SELECT * from resorts LIMIT 24 OFFSET %s"
+			sql = "SELECT * from resorts LIMIT 13 OFFSET %s"
 			value = (12 * page, )
 		else:
-			sql = "SELECT * FROM resorts WHERE name LIKE (%s) or mrt = (%s) LIMIT 24 OFFSET %s"
+			sql = "SELECT * FROM resorts WHERE name LIKE (%s) or mrt = (%s) LIMIT 13 OFFSET %s"
 			value = ('%' + keyword + '%', keyword, 12 * page, )
 
 		cursor.execute(sql, value)
