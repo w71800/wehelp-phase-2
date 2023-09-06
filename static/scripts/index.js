@@ -41,3 +41,21 @@ function scrolling(direction, el){
   scroller.style.setProperty("transform", `translateX(${delta}px)`)
 
 }
+
+function init(){
+  fetch("api/mrts")
+  .then( res => res.json() )
+  .then( res => {
+    let { data } = res
+    for(item of data){
+      let elMrt = document.createElement("div")
+      elMrt.classList.add("mrt")
+      elMrt.textContent = item
+      
+      scroller.append(elMrt)
+    }
+    
+  })
+}
+
+init()

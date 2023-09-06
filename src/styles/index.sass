@@ -9,6 +9,7 @@
   font-family: "Noto Sans TC"
   >.container
     width: min(1200px, 100%)
+  
 
 html, body
   margin: 0
@@ -16,6 +17,7 @@ html, body
 
 .psuedo
   height: 64px
+
 // Layout //
 #navbar
   z-index: 100
@@ -34,12 +36,14 @@ html, body
     font-size: 30px
     font-weight: 700
     color: vars.$color_primary
+    min-width: 150px
   .navbar_options
     display: flex
     .navbar_option
       +vars.center
       font-size: 1rem
       padding: 10px
+      min-width: 90px
 
 #header
   +vars.center
@@ -59,7 +63,6 @@ html, body
     font-size: 1rem
   .header_bar
     display: flex
-    overflow: hidden
   input
     width: 400px
     border-radius: 5px 0 0 5px
@@ -71,11 +74,12 @@ html, body
       color: #757575
       font-weight: 700
   .header_icon
+    min-width: 50px
+    flex-basis: 60px
     border-radius: 0px 5px 5px 0px
     display: flex
     +vars.center
     background-color: vars.$color_primary
-    width: 60px
     height: 46px
 
 #scroller

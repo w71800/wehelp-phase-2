@@ -1,4 +1,23 @@
-@media screen and (max-width: 1200px)
+@use 'vars'
+
+@media screen and (max-width: 1279px)
+  #navbar, #header, #main, #footer
+    .container
+      padding: 0px 15px
+
+@media screen and (max-width: 1080px)
+  #main
+    .container
+      .block
+        +vars.setBlockNums(3)
+
+@media screen and (max-width: 500px)
+  #main
+    .container
+      .block
+        +vars.setBlockNums(1)
+
+@media screen and (max-width: 360px)
   #navbar
     .container
-      padding-left: 10px
+      padding-right: 0px
