@@ -97,7 +97,7 @@ html, body {
   height: 46px;
 }
 #header input {
-  width: 400px;
+  width: 320px;
   border-radius: 5px 0 0 5px;
   appearance: none;
   border: none;
@@ -120,6 +120,7 @@ html, body {
   justify-content: center;
   background-color: #448899;
   height: 46px;
+  cursor: pointer;
 }
 
 #scroller {
@@ -186,13 +187,31 @@ html, body {
   width: 100%;
   flex-wrap: wrap;
   padding: 10px;
+  margin-bottom: 10px;
 }
 #main .status {
+  text-align: center;
+  color: #757575;
+  margin-bottom: 10px;
   display: none;
 }
 #main .status.show {
   display: block;
   color: #757575;
+}
+#main .row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+#main .row.last {
+  justify-content: start;
+}
+#main .last .block {
+  margin-right: 30px;
+}
+#main .last .block:last-child {
+  margin-right: 0px;
 }
 #main .block {
   width: calc( (100% - (4 - 1) * 30px) / 4 );

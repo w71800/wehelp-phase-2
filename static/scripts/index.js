@@ -21,18 +21,36 @@ searchBtn.addEventListener("click", function(){
   let input = document.querySelector(".header_bar input")
   queryStatus.keyword = input.value
   queryStatus.nextPage = 0
+  clearOut()
+  renderStatus()
 
   getData()
 })
-window.addEventListener("scroll", e => {
-  // 底部位置等於 scrollTop + window.innerHeight
-  let nowPos = document.documentElement.scrollTop;
+window.addEventListener("keyup", function(e){
+  console.log(e.code);
+  if(e.code == "Enter"){
+    let input = document.querySelector(".header_bar input")
+    queryStatus.keyword = input.value
+    queryStatus.nextPage = 0
+    clearOut()
+    renderStatus()
+  
+    getData()
+  }
+})
+window.addEventListener("scroll", ()=>{
+  let scrollTop = document.documentElement.scrollTop;
   let totalHeight = document.documentElement.scrollHeight;
   let windowHeight = window.innerHeight;
 
-  if (nowPos + windowHeight >= totalHeight) {
-    // 必要要處理 debounce
-    getData()
+  
+  if (scrollTop + windowHeight >= totalHeight) {
+    if(queryStatus.nextPage == null){
+      renderStatus("沒有其他資料了")
+      return
+    }
+    console.log("有觸發");
+    debounceGetData()
   }
 })
 
@@ -105,33 +123,50 @@ function makeBlock(obj){
 
 return block 
 }
-// 抓到資料之後製作 block 並往後塞
 function getData(){
-  /* 
-  ** 抓到 data 後將 nextPage 值要塞進去，之後的換頁請求就是由 nextPage 來決定
-  ** 要搜尋 keyword 之前，要先把值加入全域的狀態變數，並把 nextPage 歸零 
-  */
-
   let { nextPage: page, keyword } = queryStatus
+  
+  if(page == null) return
+    
   let queryStr = `page=${ page }`
   if(keyword){
     queryStr += `&keyword=${keyword}`
   }
-
+  
   fetch(`api/attractions?${queryStr}`)
   .then( res => res.json() )
   .then( res => {
-    let { data, nextPage } = res
-    
-    if(res.error){
-      console.log("錯誤");
+    if(res.error) {
+      renderStatus(res.message)
     }else{
-  
+      let { data, nextPage } = res
+      
       for(item of data){
         let block = makeBlock(item)
         content.appendChild(block)
       }
-  
+
+      // 加上 row 的版本
+      // let row
+      // for(let i=0; i<data.length; i++){
+      //   let block = makeBlock(data[i])
+        
+      //   if(i%4 == 0){
+      //     row = document.createElement("div")
+      //     row.classList.add("row")
+      //   }
+        
+      //   row.appendChild(block)
+
+      //   if(i == data.length - 1){
+      //     row.classList.add("last")
+      //   }
+      //   if(i%4 == 3 || i == data.length - 1){
+      //     console.log("觸發");
+      //     content.appendChild(row)
+      //   }
+      // }
+
       queryStatus.nextPage = nextPage
       console.log(queryStatus);
     }
@@ -139,37 +174,35 @@ function getData(){
   .catch( e => {
     console.log(e);
   })
+  
 
+}
+function clearOut(){
+  while(content.firstChild){
+    content.removeChild(content.firstChild)
+  }
 }
 function stringQueryer(str){
   queryStatus.keyword = str
   queryStatus.nextPage = 0
-  while(content.firstChild){
-    content.removeChild(content.firstChild)
-  }
+  clearOut()
 
   getData()
 }
-function renderStatus(prosses){
+function renderStatus(statusStr){
   /**
    * 1. 剛載入時新抓資料時或關鍵字搜尋時：show 搜尋中、content 高度固定且資料清空 → 載入完畢 → 拔掉 show、回歸初始高度 → 交由 getData 來塞入
    * 2. 錯誤時： show 無此資料
-   * 3. 繼續載入下一頁資料
+   * 3. 繼續載入下一頁資料：show 搜尋中
+   * 4. 無下頁資料：show 已無更多資料
    */
-  if(prosses == "searching"){
-    while(content.firstChild){
-      content.removeChild(content.firstChild)
-    }
-    content.style.setProperty("height", "300px")
-    showStatus.classList.add("show")
-  }else if(prosses == "no data"){
-    showStatus.textContent = "無此資料"
-    content.style.setProperty("height", "300px")
-    showStatus.classList.add("show")
-  }else if(process == "next page"){
-    content.style.setProperty("height", "300px")
-    showStatus.classList.add("show")
+  if(statusStr == undefined){
+    showStatus.classList.remove("show")
+    showStatus.textContent = ""
   }
+  showStatus.classList.add("show")
+  showStatus.textContent = statusStr
+
 }
 function init(){
   fetch("api/mrts")
@@ -183,7 +216,7 @@ function init(){
       elMrt.textContent = item
       elMrt.addEventListener("click", function(){
         let input = document.querySelector(".header_bar input")
-        
+        renderStatus()
         input.value = this.textContent
 
         stringQueryer(this.textContent)
@@ -195,5 +228,23 @@ function init(){
   getData()
 
 }
+// 生成有防抖保護的 function
+function debounce(func, delay) {
+  let timer;
+
+  return function () {
+    const context = this;
+    const args = arguments;
+
+    clearTimeout(timer);
+
+    timer = setTimeout(function () {
+      func.apply(context, args);
+    }, delay);
+  };
+}
 
 init()
+let debounceGetData = debounce(getData, 300)
+
+

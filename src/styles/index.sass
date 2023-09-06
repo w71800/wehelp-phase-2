@@ -65,7 +65,7 @@ html, body
     display: flex
     height: 46px
   input
-    width: 400px
+    width: 320px
     border-radius: 5px 0 0 5px
     appearance: none
     border: none
@@ -84,6 +84,7 @@ html, body
     +vars.center
     background-color: vars.$color_primary
     height: 46px
+    cursor: pointer
 
 #scroller
   +vars.center
@@ -133,11 +134,26 @@ html, body
     width: 100%
     flex-wrap: wrap
     padding: 10px
+    margin-bottom: 10px
   .status
+    text-align: center
+    color: vars.$color_secondary
+    margin-bottom: 10px
     display: none
     &.show
       display: block
       color: vars.$color_secondary
+  .row
+    width: 100%
+    display: flex
+    justify-content: space-between
+    &.last
+      justify-content: start
+  .last
+    & .block
+      margin-right: 30px
+      &:last-child
+        margin-right: 0px
   .block
     +vars.setBlockNums(4, 30px)
     height: 242px
