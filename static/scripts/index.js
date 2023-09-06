@@ -44,7 +44,7 @@ window.addEventListener("scroll", ()=>{
   let windowHeight = window.innerHeight;
 
   
-  if (scrollTop + windowHeight >= totalHeight) {
+  if (scrollTop + windowHeight >= totalHeight && content.children.length != 0) {
     if(queryStatus.nextPage == null){
       renderStatus("沒有其他資料了")
       return

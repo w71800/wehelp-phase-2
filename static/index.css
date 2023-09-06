@@ -194,6 +194,7 @@ html, body {
   color: #757575;
   margin-bottom: 10px;
   display: none;
+  height: 30px;
 }
 #main .status.show {
   display: block;
