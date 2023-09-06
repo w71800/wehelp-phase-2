@@ -63,15 +63,18 @@ html, body
     font-size: 1rem
   .header_bar
     display: flex
+    height: 46px
   input
     width: 400px
     border-radius: 5px 0 0 5px
     appearance: none
     border: none
-    padding: 15px
+    color: vars.$color_secondary
+    font-size: 1rem
+    padding-left: 15px
     &::placeholder
       font-size: 1rem
-      color: #757575
+      color: vars.$color_secondary
       font-weight: 700
   .header_icon
     min-width: 50px
@@ -98,10 +101,11 @@ html, body
     white-space: nowrap
     transition: .3s
   .mrt
+    cursor: pointer
     display: inline-block
     font-size: 1rem
     padding: 5px 15px
-    color: #666  
+    color: #666
   .scroll_btn
     position: absolute
     width: 32px
@@ -129,6 +133,11 @@ html, body
     width: 100%
     flex-wrap: wrap
     padding: 10px
+  .status
+    display: none
+    &.show
+      display: block
+      color: vars.$color_secondary
   .block
     +vars.setBlockNums(4, 30px)
     height: 242px
@@ -147,10 +156,10 @@ html, body
     display: flex
     justify-content: space-between
     align-items: center
-    .mrt, .description, .title
+    .mrt, .category, .title
       padding: 0px 10px
-    .mrt, .description
-      color: #757575
+    .mrt, .category
+      color: vars.$color_secondary
     .title
       display: flex
       align-items: center
@@ -164,7 +173,7 @@ html, body
       font-weight: 700
   
 #footer
-  background-color: #757575
+  background-color: vars.$color_secondary
   padding: 40px 0px
   +vars.center
   .footer_content

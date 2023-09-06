@@ -94,13 +94,16 @@ html, body {
 }
 #header .header_bar {
   display: flex;
+  height: 46px;
 }
 #header input {
   width: 400px;
   border-radius: 5px 0 0 5px;
   appearance: none;
   border: none;
-  padding: 15px;
+  color: #757575;
+  font-size: 1rem;
+  padding-left: 15px;
 }
 #header input::placeholder {
   font-size: 1rem;
@@ -145,6 +148,7 @@ html, body {
   transition: 0.3s;
 }
 #scroller .mrt {
+  cursor: pointer;
   display: inline-block;
   font-size: 1rem;
   padding: 5px 15px;
@@ -183,6 +187,13 @@ html, body {
   flex-wrap: wrap;
   padding: 10px;
 }
+#main .status {
+  display: none;
+}
+#main .status.show {
+  display: block;
+  color: #757575;
+}
 #main .block {
   width: calc( (100% - (4 - 1) * 30px) / 4 );
   height: 242px;
@@ -205,10 +216,10 @@ html, body {
   justify-content: space-between;
   align-items: center;
 }
-#main .block_info .mrt, #main .block_info .description, #main .block_info .title {
+#main .block_info .mrt, #main .block_info .category, #main .block_info .title {
   padding: 0px 10px;
 }
-#main .block_info .mrt, #main .block_info .description {
+#main .block_info .mrt, #main .block_info .category {
   color: #757575;
 }
 #main .block_info .title {
