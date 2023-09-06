@@ -140,6 +140,7 @@ function getData(){
       renderStatus(res.message)
     }else{
       let { data, nextPage } = res
+      console.log(data);
       
       for(item of data){
         let block = makeBlock(item)
