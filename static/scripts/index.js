@@ -7,7 +7,8 @@ const showStatus = document.querySelector(".status")
 let directionCounter = {}
 let queryStatus = {
   nextPage: 0,
-  keyword: null
+  keyword: null,
+  isQuerying: false
 }
 
 scrollBtns.forEach( btn => {
@@ -43,7 +44,7 @@ window.addEventListener("scroll", ()=>{
   let windowHeight = window.innerHeight;
 
   
-  if (scrollTop + windowHeight >= totalHeight && content.children.length != 0) {
+  if (scrollTop + windowHeight >= totalHeight && content.children.length != 0 && queryStatus.isQuerying == false) {
     if(queryStatus.nextPage == null){
       renderStatus("沒有其他資料了")
       return
@@ -123,15 +124,16 @@ function makeBlock(obj){
 return block 
 }
 function getData(){
-  let { nextPage: page, keyword } = queryStatus
+  let { nextPage: page, keyword, isQuerying } = queryStatus
   
   if(page == null) return
-    
+  
   let queryStr = `page=${ page }`
   if(keyword){
     queryStr += `&keyword=${keyword}`
   }
-  
+
+  queryStatus.isQuerying = true
   fetch(`api/attractions?${queryStr}`)
   .then( res => {
     let { status } = res
@@ -166,6 +168,7 @@ function getData(){
     }
     else{
       renderStatus()
+      queryStatus.isQuerying = false
     }
   })
   .catch( e => {
