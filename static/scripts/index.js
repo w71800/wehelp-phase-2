@@ -27,7 +27,6 @@ searchBtn.addEventListener("click", function(){
   getData()
 })
 window.addEventListener("keyup", function(e){
-  console.log(e.code);
   if(e.code == "Enter"){
     let input = document.querySelector(".header_bar input")
     queryStatus.keyword = input.value
@@ -49,7 +48,7 @@ window.addEventListener("scroll", ()=>{
       renderStatus("沒有其他資料了")
       return
     }
-    console.log("有觸發");
+    renderStatus("搜尋中...")
     debounceGetData()
   }
 })
@@ -134,48 +133,44 @@ function getData(){
   }
   
   fetch(`api/attractions?${queryStr}`)
-  .then( res => res.json() )
+  .then( res => {
+    let { status } = res
+    return res.json()
+    .then( data => {
+      const responseData = {
+        status: status,
+        ...data
+      };
+      return responseData;
+    })
+  } )
   .then( res => {
     if(res.error) {
-      renderStatus(res.message)
+      console.log("not OK");
     }else{
       let { data, nextPage } = res
-      console.log(data);
       
       for(item of data){
         let block = makeBlock(item)
         content.appendChild(block)
       }
 
-      // 加上 row 的版本
-      // let row
-      // for(let i=0; i<data.length; i++){
-      //   let block = makeBlock(data[i])
-        
-      //   if(i%4 == 0){
-      //     row = document.createElement("div")
-      //     row.classList.add("row")
-      //   }
-        
-      //   row.appendChild(block)
-
-      //   if(i == data.length - 1){
-      //     row.classList.add("last")
-      //   }
-      //   if(i%4 == 3 || i == data.length - 1){
-      //     console.log("觸發");
-      //     content.appendChild(row)
-      //   }
-      // }
-
       queryStatus.nextPage = nextPage
       console.log(queryStatus);
+    }
+    return res
+  })
+  .then( res => {
+    if(res.status == 500){
+      renderStatus(res.message)
+    }
+    else{
+      renderStatus()
     }
   })
   .catch( e => {
     console.log(e);
   })
-  
 
 }
 function clearOut(){

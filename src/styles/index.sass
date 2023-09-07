@@ -129,38 +129,21 @@ html, body
   .container
     // border: 1px solid #000
   .content
-    display: flex
-    justify-content: space-between
     width: 100%
-    flex-wrap: wrap
     padding: 10px
     margin-bottom: 10px
+    +vars.setBlockNums(4)
   .status
     text-align: center
     color: vars.$color_secondary
-    margin-bottom: 10px
-    display: none
-    height: 30px
+    padding: 20px 0px
+    opacity: 0
     &.show
-      display: block
-      color: vars.$color_secondary
-  .row
-    width: 100%
-    display: flex
-    justify-content: space-between
-    &.last
-      justify-content: start
-  .last
-    & .block
-      margin-right: 30px
-      &:last-child
-        margin-right: 0px
+      opacity: 1
   .block
-    +vars.setBlockNums(4, 30px)
     height: 242px
     border: 1px solid #E8E8E8
     border-radius: 5px
-    margin-bottom: 30px
   .block_img
     height: 80%
   img
