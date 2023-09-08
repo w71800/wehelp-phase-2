@@ -1,0 +1,17 @@
+$color_primary: #448899
+$color_white: #F8F8F8
+$color_secondary: #757575
+
+@mixin setBlockNums($num, $gap-col: 25px, $gap-row: $gap-col)
+  display: flex
+  justify-content: flex-start
+  gap: $gap-col $gap-row
+  flex-wrap: wrap
+  .block
+    width: calc(((100% - (#{$num} - 1) * #{$gap-col})) / #{$num})
+
+@mixin center()
+  display: flex
+  align-items: center
+  justify-content: center
+  
