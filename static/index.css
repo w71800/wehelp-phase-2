@@ -31,24 +31,6 @@
     padding-right: 0px;
   }
 }
-* {
-  position: relative;
-  box-sizing: border-box;
-  font-family: "Noto Sans TC";
-}
-* > .container {
-  width: min(1200px, 100%);
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-}
-
-.psuedo {
-  height: 64px;
-}
-
 #navbar {
   z-index: 100;
   background-color: white;
@@ -82,6 +64,24 @@ html, body {
   min-width: 90px;
 }
 
+* {
+  position: relative;
+  box-sizing: border-box;
+  font-family: "Noto Sans TC";
+}
+* > .container {
+  width: min(1200px, 100%);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.psuedo {
+  height: 64px;
+}
+
 #header {
   display: flex;
   align-items: center;
@@ -109,7 +109,7 @@ html, body {
   height: 46px;
 }
 #header input {
-  width: 320px;
+  width: min(320px, 80%);
   border-radius: 5px 0 0 5px;
   appearance: none;
   border: none;
