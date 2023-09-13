@@ -9,12 +9,12 @@ dbconfig = {
 	"host": "localhost",
 	"user": "root",
 	"password": "0000",
-	"database": "wehelp",
-	"pool_name": "pool",
-	"pool_size": 5
+	"database": "wehelp"
 }
-connection_pool = connector.pooling.MySQLConnectionPool(**dbconfig)
-db = connection_pool.get_connection()
+# connection_pool = connector.pooling.MySQLConnectionPool(**dbconfig)
+# db = connection_pool.get_connection()
+
+db = connector.connect(**dbconfig)
 
 cursor = db.cursor()
 
