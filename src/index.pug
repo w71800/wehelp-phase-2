@@ -6,40 +6,41 @@ html(lang="en")
     title Document
     link(rel="stylesheet", href="{{url_for('static', filename='index.css')}}")
   body 
-    .psuedo
-    #navbar
-      .container
-        .navbar_title 台北一日遊
-        .navbar_options
-          .navbar_option 預定行程
-          .navbar_option 登入/註冊
-    #header(
-      style="background-image: url('{{ url_for('static', filename='header.png') }}')"
-      )
-      .container
-        .header_title 輕鬆享受台北一日悠閒
-        .header_subtitle 探索每個角落，體驗城市的深度旅遊行程
-        .header_bar
-          input(
-            type="text" 
-            placeholder="輸入景點名稱查詢"
-            )
-          .header_icon
-            img(src="{{ url_for('static', filename='icon_search.png') }}")
-    #scroller
-      .container
-        .scroll
-          .scroll_btn.backward(data-direction="backward")
-            img(src="{{ url_for('static', filename='backward.png') }}")
-          .scroll_btn.forward(data-direction="forward")
-            img(src="{{ url_for('static', filename='forward.png') }}")
-          .scroll_container
-            .scroll_scroller
-    #main
-      .container
-        .content
-        .status 
-    #footer
-      .footer_content COPYRIGHT © 2021 台北一日遊
+    #page-index
+      .psuedo
+      #navbar
+        .container
+          .navbar_title 台北一日遊
+          .navbar_options
+            .navbar_option 預定行程
+            .navbar_option 登入/註冊
+      #header(
+        style="background-image: url({{ url_for('static', filename='imgs/header.png') }})"
+        )
+        .container
+          .header_title 輕鬆享受台北一日悠閒
+          .header_subtitle 探索每個角落，體驗城市的深度旅遊行程
+          .header_bar
+            input(
+              type="text" 
+              placeholder="輸入景點名稱查詢"
+              )
+            .header_icon
+              img(src="{{ url_for('static', filename='imgs/icon_search.png') }}")
+      #scroller
+        .container
+          .scroll
+            .scroll_btn.backward(data-direction="backward")
+              img(src="{{ url_for('static', filename='imgs/backward.png') }}")
+            .scroll_btn.forward(data-direction="forward")
+              img(src="{{ url_for('static', filename='imgs/forward.png') }}")
+            .scroll_container
+              .scroll_scroller
+      #main
+        .container
+          .content
+          .status 
+      #footer
+        .footer_content COPYRIGHT © 2021 台北一日遊
 
   script(src="{{ url_for('static', filename='/scripts/index.js') }}")

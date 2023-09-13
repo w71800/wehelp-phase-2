@@ -1,3 +1,312 @@
-h1 {
-  color: red;
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap");
+@media screen and (max-width: 1279px) {
+  * > .container {
+    padding: 0px 15px;
+  }
+}
+@media screen and (max-width: 1080px) {
+  #page-index #main .container .content {
+    display: flex;
+    justify-content: flex-start;
+    gap: 25px 25px;
+    flex-wrap: wrap;
+  }
+  #page-index #main .container .content .block {
+    width: calc(((100% - (3 - 1) * 25px)) / 3);
+  }
+}
+@media screen and (max-width: 700px) {
+  #page-attraction .psuedo {
+    margin: 0;
+  }
+  #page-attraction #main .container {
+    display: block;
+    gap: 0;
+    padding: 0;
+  }
+  #page-attraction #main .container .carousel, #page-attraction #main .container .area {
+    width: 100%;
+  }
+  #page-attraction #main .container .carousel {
+    height: 415px;
+  }
+  #page-attraction #main .container .area {
+    padding: 15px 15px;
+  }
+  #page-attraction #main .container .carousel-imgs {
+    overflow: visible;
+  }
+}
+@media screen and (max-width: 500px) {
+  #page-index #main .container .content {
+    display: flex;
+    justify-content: flex-start;
+    gap: 25px 25px;
+    flex-wrap: wrap;
+  }
+  #page-index #main .container .content .block {
+    width: calc(((100% - (1 - 1) * 25px)) / 1);
+  }
+}
+@media screen and (max-width: 360px) {
+  #page-index #navbar .container {
+    padding-right: 0px;
+  }
+
+  #page-attraction .psuedo {
+    height: 94px;
+  }
+  #page-attraction #main .container .carousel {
+    height: 360px;
+  }
+}
+#navbar {
+  z-index: 100;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0px;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+}
+#navbar .container {
+  display: flex;
+  justify-content: space-between;
+}
+#navbar .navbar_title {
+  font-size: 30px;
+  font-weight: 700;
+  color: #448899;
+  min-width: 150px;
+}
+#navbar .navbar_options {
+  display: flex;
+}
+#navbar .navbar_options .navbar_option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  padding: 10px;
+  min-width: 90px;
+}
+
+#footer {
+  background-color: #757575;
+  padding: 40px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#footer .footer_content {
+  font-weight: 700;
+  color: white;
+}
+
+* {
+  position: relative;
+  box-sizing: border-box;
+  font-family: "Noto Sans TC";
+}
+* > .container {
+  width: min(1200px, 100%);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.psuedo {
+  height: 64px;
+}
+
+#navbar {
+  border: 1px solid #E8E8E8;
+}
+
+.psuedo {
+  margin-bottom: 40px;
+}
+
+#main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#main .container {
+  display: flex;
+  gap: 20px;
+  padding-bottom: 40px;
+  padding-right: 10px;
+  padding-left: 10px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #E8E8E8;
+}
+#main .container > * {
+  width: 50%;
+}
+#main .carousel .carousel-btn {
+  position: absolute;
+  opacity: 0.6;
+  top: 50%;
+  z-index: 90;
+}
+#main .carousel .carousel-btn.next {
+  transform: translate(-10px, -50%);
+  right: 0;
+}
+#main .carousel .carousel-btn.prev {
+  transform: translate(10px, -50%);
+}
+#main .carousel .carousel-btn img {
+  cursor: pointer;
+}
+#main .carousel .carousel-imgs {
+  height: 100%;
+  border-radius: 5px;
+  overflow: hidden;
+}
+#main .carousel .carousel-imgs img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+#main .carousel .carousel-indicators {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+#main .carousel .carousel-indicators .indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid white;
+  background-color: white;
+  opacity: 0.8;
+}
+#main .carousel .carousel-indicators .indicator.active {
+  background-color: black;
+}
+#main .area * {
+  color: #666;
+}
+#main .area .title, #main .area .subtitle {
+  margin-bottom: 20px;
+}
+#main .area .title {
+  font-weight: 700;
+  font-size: 24px;
+}
+#main .area .subtitle {
+  font-size: 1rem;
+}
+#main .area .panel {
+  background-color: #E8E8E8;
+  padding: 20px;
+}
+#main .area .panel .input-date > label, #main .area .panel .input-time > label, #main .area .panel .input-fee > label {
+  font-weight: 700;
+}
+#main .area .panel * {
+  margin-bottom: 15px;
+}
+#main .area .panel input {
+  appearance: none;
+  margin: 0;
+  border: 0;
+}
+#main .area .panel .panel-title {
+  font-weight: 700;
+}
+#main .area .panel .panel-subtitle {
+  font-weight: 500;
+}
+#main .area .panel .input-date .wrapper {
+  display: inline-block;
+  width: min(193px, 50%);
+  vertical-align: middle;
+  margin-bottom: 0;
+}
+#main .area .panel .input-date input {
+  height: 30px;
+  padding: 5px 10px;
+  width: 100%;
+  font-size: 1rem;
+}
+#main .area .panel .input-date input::placeholder {
+  color: #000;
+  font-size: 1rem;
+}
+#main .area .panel .input-date .icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+}
+#main .area .panel .input-time {
+  vertical-align: middle;
+}
+#main .area .panel .input-time .wrapper {
+  display: inline-block;
+  margin-bottom: 0;
+}
+#main .area .panel .input-time .wrapper:nth-child(2) {
+  margin-right: 20px;
+}
+#main .area .panel .input-time input, #main .area .panel .input-time span {
+  vertical-align: middle;
+}
+#main .area .panel .input-time input {
+  width: 22px;
+  height: 22px;
+  border: 2px solid white;
+  border-radius: 50%;
+  background-color: white;
+  margin-right: 5px;
+}
+#main .area .panel .input-time input:checked {
+  background-color: #448899;
+}
+#main .area .panel .input-fee input {
+  display: none;
+}
+#main .area .panel input.panel-button {
+  background-color: #448899;
+  padding: 10px 20px;
+  color: white;
+  border-radius: 5px;
+  font-size: 19px;
+  font-weight: 400;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+#info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#info .description, #info .address, #info .transport {
+  margin-bottom: 30px;
+}
+#info .description > .info-title, #info .address > .info-title, #info .transport > .info-title {
+  font-weight: 700;
+}
+#info .content {
+  font-weight: 400;
+}
+#info .transport {
+  margin-bottom: 100px;
+}
+
+#main .carousel-btn:hover {
+  opacity: 1;
 }

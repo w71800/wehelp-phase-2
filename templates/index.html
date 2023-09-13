@@ -7,45 +7,47 @@
     <link rel="stylesheet" href="{{url_for('static', filename='index.css')}}">
   </head>
   <body> 
-    <div class="psuedo"></div>
-    <div id="navbar">
-      <div class="container">
-        <div class="navbar_title">台北一日遊</div>
-        <div class="navbar_options">
-          <div class="navbar_option">預定行程</div>
-          <div class="navbar_option">登入/註冊</div>
-        </div>
-      </div>
-    </div>
-    <div id="header" style="background-image: url('{{ url_for('static', filename='header.png') }}')">
-      <div class="container">
-        <div class="header_title">輕鬆享受台北一日悠閒</div>
-        <div class="header_subtitle">探索每個角落，體驗城市的深度旅遊行程</div>
-        <div class="header_bar">
-          <input type="text" placeholder="輸入景點名稱查詢">
-          <div class="header_icon"><img src="{{ url_for('static', filename='icon_search.png') }}"></div>
-        </div>
-      </div>
-    </div>
-    <div id="scroller">
-      <div class="container">
-        <div class="scroll">
-          <div class="scroll_btn backward" data-direction="backward"><img src="{{ url_for('static', filename='backward.png') }}"></div>
-          <div class="scroll_btn forward" data-direction="forward"><img src="{{ url_for('static', filename='forward.png') }}"></div>
-          <div class="scroll_container">
-            <div class="scroll_scroller"></div>
+    <div id="page-index">
+      <div class="psuedo"></div>
+      <div id="navbar">
+        <div class="container">
+          <div class="navbar_title">台北一日遊</div>
+          <div class="navbar_options">
+            <div class="navbar_option">預定行程</div>
+            <div class="navbar_option">登入/註冊</div>
           </div>
         </div>
       </div>
-    </div>
-    <div id="main">
-      <div class="container">
-        <div class="content"></div>
-        <div class="status"> </div>
+      <div id="header" style="background-image: url({{ url_for('static', filename='imgs/header.png') }})">
+        <div class="container">
+          <div class="header_title">輕鬆享受台北一日悠閒</div>
+          <div class="header_subtitle">探索每個角落，體驗城市的深度旅遊行程</div>
+          <div class="header_bar">
+            <input type="text" placeholder="輸入景點名稱查詢">
+            <div class="header_icon"><img src="{{ url_for('static', filename='imgs/icon_search.png') }}"></div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div id="footer">
-      <div class="footer_content">COPYRIGHT © 2021 台北一日遊</div>
+      <div id="scroller">
+        <div class="container">
+          <div class="scroll">
+            <div class="scroll_btn backward" data-direction="backward"><img src="{{ url_for('static', filename='imgs/backward.png') }}"></div>
+            <div class="scroll_btn forward" data-direction="forward"><img src="{{ url_for('static', filename='imgs/forward.png') }}"></div>
+            <div class="scroll_container">
+              <div class="scroll_scroller"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="main">
+        <div class="container">
+          <div class="content"></div>
+          <div class="status"> </div>
+        </div>
+      </div>
+      <div id="footer">
+        <div class="footer_content">COPYRIGHT © 2021 台北一日遊</div>
+      </div>
     </div>
   </body>
   <script src="{{ url_for('static', filename='/scripts/index.js') }}"></script>
