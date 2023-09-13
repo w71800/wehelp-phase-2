@@ -92,6 +92,10 @@
   padding: 10px;
   min-width: 90px;
 }
+#navbar a {
+  text-decoration: none;
+  color: #448899;
+}
 
 #footer {
   background-color: #757575;
