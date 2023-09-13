@@ -3,7 +3,7 @@ html(lang="en")
   head
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title 平安鐘
+    title 景點資料
     link(rel="stylesheet", href="{{url_for('static', filename='attraction.css')}}")
   body 
     #page-attraction
@@ -17,21 +17,15 @@ html(lang="en")
       #main
         .container
           .carousel
-            .carousel-btn.prev
+            .carousel-btn.prev(data-direction="previous")
               img(src="{{ url_for('static', filename='imgs/backward.png') }}")
-            .carousel-btn.next
+            .carousel-btn.next(data-direction="next")
               img(src="{{ url_for('static', filename='imgs/forward.png') }}")
             .carousel-imgs
-              img.active(src="{{ url_for('static', filename='imgs/Picture.png') }}")
-              img(src="{{ url_for('static', filename='imgs/Picture.png') }}")
-              img(src="{{ url_for('static', filename='imgs/Picture.png') }}")
             .carousel-indicators
-              .indicator.active
-              .indicator 
-              .indicator 
           .area
-            .title 平安鐘
-            .subtitle 公共藝術 at 忠孝復興
+            .title 景點資料
+            .subtitle 
             .panel
               .panel-title 訂購導覽行程
               .panel-subtitle 以此景點為中心的一日行程，帶您探索城市角落故事
@@ -50,10 +44,10 @@ html(lang="en")
                 .input-time
                   label(for="time") 選擇時間：
                   .wrapper
-                    input(type="radio" name="time" id="time") 
+                    input(type="radio" name="time" id="time" value=2000 checked) 
                     span 上半天
                   .wrapper
-                    input(type="radio" name="time" id="time")
+                    input(type="radio" name="time" id="time" value=2500)
                     span 下半天
                 .input-fee 
                   label(for="fee") 導覽費用：

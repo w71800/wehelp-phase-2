@@ -46,6 +46,8 @@
         width: 100%
         height: 100%
         object-fit: cover
+        opacity: 0
+        transition: .3s
     .carousel-indicators
       position: absolute
       bottom: 10px
@@ -60,8 +62,8 @@
         border: 1px solid white
         background-color: white
         opacity: .8
-        &.active
-          background-color: black
+        transition: .3s
+        
   .area
     *
       color: #666
@@ -144,6 +146,7 @@
   +vars.center
   .container
   .description, .address, .transport
+    color: #666
     margin-bottom: 30px
     >.info-title
       font-weight: 700
@@ -158,4 +161,16 @@
   .carousel-btn
     &:hover
       opacity: 1
+    &.hide
+      display: none
+  .carousel-imgs
+    img
+      &.active
+        opacity: 1
+  .carousel-indicators
+    .indicator
+      &.active
+        background-color: black
+
+        
 

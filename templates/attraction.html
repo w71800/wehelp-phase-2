@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>平安鐘</title>
+    <title>景點資料</title>
     <link rel="stylesheet" href="{{url_for('static', filename='attraction.css')}}">
   </head>
   <body> 
@@ -21,18 +21,14 @@
       <div id="main">
         <div class="container">
           <div class="carousel">
-            <div class="carousel-btn prev"><img src="{{ url_for('static', filename='imgs/backward.png') }}"></div>
-            <div class="carousel-btn next"><img src="{{ url_for('static', filename='imgs/forward.png') }}"></div>
-            <div class="carousel-imgs"><img class="active" src="{{ url_for('static', filename='imgs/Picture.png') }}"><img src="{{ url_for('static', filename='imgs/Picture.png') }}"><img src="{{ url_for('static', filename='imgs/Picture.png') }}"></div>
-            <div class="carousel-indicators">
-              <div class="indicator active"></div>
-              <div class="indicator"> </div>
-              <div class="indicator"> </div>
-            </div>
+            <div class="carousel-btn prev" data-direction="previous"><img src="{{ url_for('static', filename='imgs/backward.png') }}"></div>
+            <div class="carousel-btn next" data-direction="next"><img src="{{ url_for('static', filename='imgs/forward.png') }}"></div>
+            <div class="carousel-imgs"></div>
+            <div class="carousel-indicators"></div>
           </div>
           <div class="area">
-            <div class="title">平安鐘</div>
-            <div class="subtitle">公共藝術 at 忠孝復興</div>
+            <div class="title">景點資料</div>
+            <div class="subtitle"> </div>
             <div class="panel">
               <div class="panel-title">訂購導覽行程</div>
               <div class="panel-subtitle">以此景點為中心的一日行程，帶您探索城市角落故事</div>
@@ -46,10 +42,10 @@
                 <div class="input-time">
                   <label for="time">選擇時間：</label>
                   <div class="wrapper">
-                    <input type="radio" name="time" id="time"><span>上半天</span>
+                    <input type="radio" name="time" id="time" value="2000" checked><span>上半天</span>
                   </div>
                   <div class="wrapper">
-                    <input type="radio" name="time" id="time"><span>下半天</span>
+                    <input type="radio" name="time" id="time" value="2500"><span>下半天</span>
                   </div>
                 </div>
                 <div class="input-fee"> 
