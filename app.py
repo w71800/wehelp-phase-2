@@ -100,7 +100,7 @@ def api_attractions():
 
 		return make_response(jsonify(response), 200)
 		
-	except Exception as e:
+	except connector.Error as e:
 		response = {
 			"error": True, 
 			"message": "伺服器發生內部錯誤"
@@ -154,7 +154,7 @@ def api_mrts():
 		}
 		return make_response(jsonify(response), 200)
 	
-	except Exception as e:
+	except connector.Error as e:
 		response = {
 				"error": True, 
 				"message": "伺服器發生內部錯誤"
