@@ -9,12 +9,14 @@ dbconfig = {
 	"host": "localhost",
 	"user": "root",
 	"password": "0000",
-	"database": "wehelp"
+	"database": "wehelp",
+	"pool_name": "pool",
+	"pool_size": 5
 }
-# connection_pool = connector.pooling.MySQLConnectionPool(**dbconfig)
-# db = connection_pool.get_connection()
+connection_pool = connector.pooling.MySQLConnectionPool(**dbconfig)
+db = connection_pool.get_connection()
 
-db = connector.connect(**dbconfig)
+# db = connector.connect(**dbconfig)
 
 cursor = db.cursor()
 
@@ -103,7 +105,7 @@ def api_attractions():
 	except connector.Error as e:
 		response = {
 			"error": True, 
-			"message": "伺服器發生內部錯誤"
+			"message": f"伺服器發生內部錯誤：{e}"
 			}
 		print(e)
 		return make_response(jsonify(response), 500)
@@ -133,7 +135,7 @@ def api_attraction＿id(attractionId):
 	except Exception as e:
 		response = { 
 			"error": True, 
-			"message": "伺服器內部出錯"
+			"message": f"伺服器發生內部錯誤：{e}"
 		}
 		print(e)
 		return make_response(jsonify(response), 500)
@@ -157,7 +159,7 @@ def api_mrts():
 	except connector.Error as e:
 		response = {
 				"error": True, 
-				"message": "伺服器發生內部錯誤"
+				"message": f"伺服器發生內部錯誤：{e}"
 				}
 		return make_response(jsonify(response), 500)
 		
