@@ -13,10 +13,9 @@ dbconfig = {
 	"pool_name": "pool",
 	"pool_size": 5
 }
+# 建立一個 pool
 connection_pool = connector.pooling.MySQLConnectionPool(**dbconfig)
-db = connection_pool.get_connection()
 
-cursor = db.cursor()
 
 # 放入一個未處理的 row tuple 轉換成 dict
 def reform_attraction(raw):
@@ -54,6 +53,9 @@ def thankyou():
 # 一口氣取一整包的模式
 @app.route("/api/attractions/")
 def api_attractions():
+	db = connection_pool.get_connection()
+	cursor = db.cursor()
+
 	page = int(request.args.get("page")) if request.args.get("page") else None
 	keyword = request.args.get("keyword")
 
@@ -62,6 +64,9 @@ def api_attractions():
 			"error": True, 
 			"message": "未輸入頁數"
 		}
+		db.close()
+		cursor.close()
+
 		return make_response(jsonify(response), 400)
 
 	try:
@@ -80,6 +85,8 @@ def api_attractions():
 				"error": True, 
 				"message": "No matched datas have been found"
 			}
+			db.close()
+			cursor.close()
 			return make_response(jsonify(response), 500)
 		
 		data_container = []
@@ -97,20 +104,28 @@ def api_attractions():
 				"nextPage": next_page,
 				"data": data_container
 			}
-
+		db.close()
+		cursor.close()
 		return make_response(jsonify(response), 200)
 		
-	except Exception as e:
+	except connector.Error as e:
 		response = {
 			"error": True, 
-			"message": "伺服器發生內部錯誤"
+			"message": f"伺服器發生內部錯誤：{e}"
 			}
 		print(e)
+		db.close()
+		cursor.close()
 		return make_response(jsonify(response), 500)
+	
+	
 
 # 選取 id 的模式
 @app.route("/api/attraction/<attractionId>")
 def api_attraction＿id(attractionId):
+	db = connection_pool.get_connection()
+	cursor = db.cursor()
+
 	try:
 		response = None
 		sql = "SELECT * from resorts where id = (%s)"
@@ -122,26 +137,35 @@ def api_attraction＿id(attractionId):
 				"error": True, 
 				"message": "搜尋的編號所對應之資料不存在" 
 			}
+			db.close()
+			cursor.close()
 			return make_response(jsonify(response), 400)
 		
 		else:
 			response = {
 				"data": reform_attraction(result[0])
 			}
+			db.close()
+			cursor.close()
 			return make_response(jsonify(response), 200)
 		
 	except Exception as e:
 		response = { 
 			"error": True, 
-			"message": "伺服器內部出錯"
+			"message": f"伺服器發生內部錯誤：{e}"
 		}
 		print(e)
+		db.close()
+		cursor.close()
 		return make_response(jsonify(response), 500)
 
 # 抓出所有 MRT 的資料，並按照景點數量由大到小排序
 @app.route("/api/mrts")
 def api_mrts():
+	db = connection_pool.get_connection()
+	cursor = db.cursor()
 	response = None
+
 	try:
 		sql = "SELECT mrt, count(name) from resorts GROUP BY mrt ORDER BY count(name) DESC"
 		cursor.execute(sql)
@@ -152,13 +176,17 @@ def api_mrts():
 		response = {
 			"data": result_container
 		}
+		db.close()
+		cursor.close()
 		return make_response(jsonify(response), 200)
 	
-	except Exception as e:
+	except connector.Error as e:
 		response = {
 				"error": True, 
-				"message": "伺服器發生內部錯誤"
+				"message": f"伺服器發生內部錯誤：{e}"
 				}
+		db.close()
+		cursor.close()
 		return make_response(jsonify(response), 500)
 		
 

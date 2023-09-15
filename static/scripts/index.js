@@ -85,43 +85,47 @@ function scrolling(direction, el){
   scroller.style.setProperty("transform", `translateX(${delta}px)`)
 
 }
-function makeBlock(obj){
-  let { name: title, mrt, category, images } = obj
+function makeBlock(obj) {
+  let { id, name: title, mrt, category, images } = obj;
 
-  const block = document.createElement('div')
-  block.classList.add('block')
+  const block = document.createElement('div');
+  block.classList.add('block');
 
-  const blockImg = document.createElement('div')
-  blockImg.classList.add('block_img')
+  const blockImg = document.createElement('div');
+  blockImg.classList.add('block_img');
 
-  const img = document.createElement('img')
-  img.src = `${images[0]}`
+  const link = document.createElement('a');
+  link.href = `/attraction/${id}`;
 
-  blockImg.appendChild(img)
+  const img = document.createElement('img');
+  img.src = `${images[0]}`;
 
-  const blockInfo = document.createElement('div')
-  blockInfo.classList.add('block_info')
+  link.appendChild(img);
+  blockImg.appendChild(link);
 
-  const titleEl = document.createElement('div')
-  titleEl.classList.add('title')
-  titleEl.textContent = title
+  const blockInfo = document.createElement('div');
+  blockInfo.classList.add('block_info');
 
-  const mrtEl = document.createElement('div')
-  mrtEl.classList.add('mrt')
-  mrtEl.textContent = mrt
+  const titleEl = document.createElement('div');
+  titleEl.classList.add('title');
+  titleEl.textContent = title;
 
-  const categoryEl = document.createElement('div')
-  categoryEl.classList.add('category')
-  categoryEl.textContent = category
+  const mrtEl = document.createElement('div');
+  mrtEl.classList.add('mrt');
+  mrtEl.textContent = mrt;
 
-  blockInfo.appendChild(titleEl)
-  blockInfo.appendChild(mrtEl)
-  blockInfo.appendChild(categoryEl)
+  const categoryEl = document.createElement('div');
+  categoryEl.classList.add('category');
+  categoryEl.textContent = category;
 
-  block.appendChild(blockImg)
-  block.appendChild(blockInfo)
+  blockInfo.appendChild(titleEl);
+  blockInfo.appendChild(mrtEl);
+  blockInfo.appendChild(categoryEl);
 
-return block 
+  block.appendChild(blockImg);
+  block.appendChild(blockInfo);
+
+  return block;
 }
 function getData(){
   let { nextPage: page, keyword, isQuerying } = queryStatus
@@ -168,8 +172,8 @@ function getData(){
     }
     else{
       renderStatus()
-      queryStatus.isQuerying = false
     }
+    queryStatus.isQuerying = false
   })
   .catch( e => {
     console.log(e);

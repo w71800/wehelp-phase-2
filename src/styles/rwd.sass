@@ -1,23 +1,54 @@
 @use 'vars'
 
 @media screen and (max-width: 1279px)
-  #navbar, #header, #main, #footer
-    .container
+  *
+    >.container
       padding: 0px 15px
 
 @media screen and (max-width: 1080px)
-  #main
-    .container
-      .content
-        +vars.setBlockNums(3)
+  #page-index
+    #main
+      .container
+        .content
+          +vars.setBlockNums(3)
+
+@media screen and (max-width: 700px)
+  #page-attraction
+    .psuedo
+      margin: 0
+    #main
+      .container
+        display: block
+        gap: 0
+        padding: 0
+        .carousel, .area
+          width: 100%
+        .carousel
+          height: 415px
+        .area
+          padding: 15px 15px
+        .carousel-imgs
+          overflow: visible
 
 @media screen and (max-width: 500px)
-  #main
-    .container
-      .content
-        +vars.setBlockNums(1)
+  #page-index
+    #main
+      .container
+        .content
+          +vars.setBlockNums(1)
 
 @media screen and (max-width: 360px)
-  #navbar
-    .container
-      padding-right: 0px
+  #page-index
+    #navbar
+      .container
+        padding-right: 0px
+  
+  #page-attraction
+    .psuedo
+      height: 94px
+    #main
+      .container
+        .carousel
+          height: 360px
+
+  

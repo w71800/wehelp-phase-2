@@ -31,24 +31,6 @@
     padding-right: 0px;
   }
 }
-* {
-  position: relative;
-  box-sizing: border-box;
-  font-family: "Noto Sans TC";
-}
-* > .container {
-  width: min(1200px, 100%);
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-}
-
-.psuedo {
-  height: 64px;
-}
-
 #navbar {
   z-index: 100;
   background-color: white;
@@ -82,6 +64,36 @@ html, body {
   min-width: 90px;
 }
 
+#footer {
+  background-color: #757575;
+  padding: 40px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#footer .footer_content {
+  font-weight: 700;
+  color: white;
+}
+
+* {
+  position: relative;
+  box-sizing: border-box;
+  font-family: "Noto Sans TC";
+}
+* > .container {
+  width: min(1200px, 100%);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.psuedo {
+  height: 64px;
+}
+
 #header {
   display: flex;
   align-items: center;
@@ -109,7 +121,7 @@ html, body {
   height: 46px;
 }
 #header input {
-  width: 320px;
+  width: min(320px, 80%);
   border-radius: 5px 0 0 5px;
   appearance: none;
   border: none;
@@ -174,6 +186,7 @@ html, body {
   border-radius: 50%;
   opacity: 0.6;
   cursor: pointer;
+  z-index: 10;
 }
 #scroller .scroll_btn.inactive {
   opacity: 0.3;
@@ -226,6 +239,11 @@ html, body {
   height: 100%;
   width: 100%;
   object-fit: cover;
+}
+#main a {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 #main .block_info {
   background-color: #fff;

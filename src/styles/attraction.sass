@@ -1,0 +1,176 @@
+@use 'vars'
+@use 'rwd'
+@use 'component'
+@use 'reset'
+
+#navbar
+  @extend #navbar
+  border: 1px solid #E8E8E8
+
+.psuedo
+  margin-bottom: 40px
+
+#main
+  +vars.center
+  .container
+    // border: 1px solid #000
+    display: flex
+    gap: 20px
+    padding-bottom: 40px
+    padding-right: 10px
+    padding-left: 10px
+    margin-bottom: 40px
+    border-bottom: 1px solid #E8E8E8
+    >*
+      width: 50%
+      // border: 1px solid #000
+  .carousel
+    .carousel-btn
+      position: absolute
+      opacity: 0.6
+      top: 50%
+      z-index: 90
+      &.next
+        transform: translate(-10px, -50%)
+        right: 0
+      &.prev
+        transform: translate(10px, -50%)
+      img
+        cursor: pointer
+    .carousel-imgs
+      height: 100%
+      border-radius: 5px
+      overflow: hidden
+      img
+        position: absolute
+        width: 100%
+        height: 100%
+        object-fit: cover
+        opacity: 0
+        transition: .3s
+    .carousel-indicators
+      position: absolute
+      bottom: 10px
+      left: 50%
+      transform: translateX(-50%)
+      display: flex
+      gap: 10px
+      .indicator
+        width: 12px
+        height: 12px
+        border-radius: 50%
+        border: 1px solid white
+        background-color: white
+        opacity: .8
+        transition: .3s
+        
+  .area
+    *
+      color: #666
+    .title, .subtitle
+      margin-bottom: 20px
+    .title
+      font-weight: 700
+      font-size: 24px
+    .subtitle
+      font-size: 1rem
+    .panel
+      background-color: #E8E8E8
+      padding: 20px
+      .input-date, .input-time, .input-fee
+        >label
+          font-weight: 700
+      *
+        margin-bottom: 15px
+      input
+        appearance: none
+        margin: 0
+        border: 0
+      .panel-title
+        font-weight: 700
+      .panel-subtitle
+        font-weight: 500
+      .input-date
+        .wrapper
+          display: inline-block
+          width: min(193px, 50%)
+          vertical-align: middle
+          margin-bottom: 0
+        & input
+          height: 30px
+          padding: 5px 10px
+          width: 100%
+          font-size: 1rem
+          &::placeholder
+            color: #000
+            font-size: 1rem
+        .icon
+          position: absolute
+          right: 10px
+          top: 50%
+          transform: translateY(-50%)
+          margin: 0
+      .input-time
+        vertical-align: middle
+        .wrapper
+          // border: 1px solid #000
+          display: inline-block
+          margin-bottom: 0
+          &:nth-child(2)
+            margin-right: 20px
+        & input, span
+          vertical-align: middle
+        & input
+          width: 22px
+          height: 22px
+          border: 2px solid white
+          border-radius: 50%
+          background-color: white
+          margin-right: 5px
+          &:checked
+            background-color: vars.$color_primary
+      .input-fee
+        input
+          display: none
+      input.panel-button
+        background-color: vars.$color_primary
+        padding: 10px 20px
+        color: white
+        border-radius: 5px
+        font-size: 19px
+        font-weight: 400
+        margin-top: 10px
+        cursor: pointer
+          
+#info
+  +vars.center
+  .container
+  .description, .address, .transport
+    color: #666
+    margin-bottom: 30px
+    >.info-title
+      font-weight: 700
+  .content
+    font-weight: 400
+  .transport
+    margin-bottom: 100px
+    
+  
+// interaction effect //
+#main
+  .carousel-btn
+    &:hover
+      opacity: 1
+    &.hide
+      display: none
+  .carousel-imgs
+    img
+      &.active
+        opacity: 1
+  .carousel-indicators
+    .indicator
+      &.active
+        background-color: black
+
+        
+
