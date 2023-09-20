@@ -257,6 +257,7 @@ def api_auth():
 	else:
 		# 抓到是否有對應的 email 和 password 是否正確
 		email, password = request.form.values()
+		print(request.form.values())
 
 		with connectToDB() as (db, cursor):
 			try:
