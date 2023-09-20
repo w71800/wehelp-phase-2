@@ -8,13 +8,14 @@
   </head>
   <body> 
     <div id="page-index">
-      <div class="psuedo"></div>
-      <div id="navbar">
-        <div class="container">
-          <div class="navbar_title">台北一日遊</div>
-          <div class="navbar_options">
-            <div class="navbar_option">預定行程</div>
-            <div class="navbar_option">登入/註冊</div>
+      <div class="psuedo">
+        <div id="navbar">
+          <div class="container">
+            <div class="navbar_title">台北一日遊</div>
+            <div class="navbar_options">
+              <div class="navbar_option">預定行程</div>
+              <div class="navbar_option">登入/註冊</div>
+            </div>
           </div>
         </div>
       </div>
@@ -47,6 +48,29 @@
       </div>
       <div id="footer">
         <div class="footer_content">COPYRIGHT © 2021 台北一日遊</div>
+      </div>
+      <div class="filter inactive">
+        <div class="signin" id="box">
+          <div class="box_title">登入會員帳號</div>
+          <div class="box_cross"><img src="{{ url_for('static', filename='imgs/icon_close.png') }}"></div>
+          <form action="/api/auth" method="PUT">
+            <input type="text" id="email" placeholder="輸入電子信箱">
+            <input type="text" id="password" placeholder="輸入密碼">
+            <input type="submit" value="登入帳戶">
+          </form>
+          <div class="box_hint">還沒有帳戶？<span>點此註冊</span></div>
+        </div>
+        <div class="signup inactive" id="box">
+          <div class="box_title">註冊會員帳號</div>
+          <div class="box_cross"><img src="{{ url_for('static', filename='imgs/icon_close.png') }}"></div>
+          <form action="/api/auth" method="PUT">
+            <input type="text" id="name" placeholder="輸入姓名">
+            <input type="text" id="email" placeholder="輸入電子信箱">
+            <input type="text" id="password" placeholder="輸入密碼">
+            <input type="submit" value="登入帳戶">
+          </form>
+          <div class="box_hint">已經有帳戶了？<span>點此登入</span></div>
+        </div>
       </div>
     </div>
   </body>

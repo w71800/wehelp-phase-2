@@ -1,0 +1,25 @@
+.filter.inactive
+  #box.signin
+    .box_title 登入會員帳號
+    .box_cross
+      img(src="{{ url_for('static', filename='imgs/icon_close.png') }}")
+    form(action="/api/auth", method="PUT")
+      input(type="text" id="email" placeholder="輸入電子信箱")
+      input(type="text" id="password" placeholder="輸入密碼")
+      input(type="submit" value="登入帳戶")
+    .box_hint 還沒有帳戶？
+      span 點此註冊
+  
+  #box.signup.inactive
+    .box_title 註冊會員帳號
+    .box_cross
+      img(src="{{ url_for('static', filename='imgs/icon_close.png') }}")
+    form(action="/api/auth", method="PUT")
+      input(type="text" id="name" placeholder="輸入姓名")
+      input(type="text" id="email" placeholder="輸入電子信箱")
+      input(type="text" id="password" placeholder="輸入密碼")
+      input(type="submit" value="登入帳戶")
+    .box_hint 已經有帳戶了？
+      span 點此登入
+      
+  
