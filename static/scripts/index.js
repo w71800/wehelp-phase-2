@@ -208,6 +208,7 @@ function renderStatus(statusStr){
 
 }
 function init(){
+  // 發出驗證
   fetch("api/mrts")
   .then( res => res.json() )
   .then( res => {
@@ -249,5 +250,3 @@ function debounce(func, delay) {
 
 init()
 let debounceGetData = debounce(getData, 300)
-
-

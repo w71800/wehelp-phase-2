@@ -8,16 +8,19 @@
   </head>
   <body> 
     <div id="page-index">
-      <div class="psuedo"></div>
-      <div id="navbar">
-        <div class="container">
-          <div class="navbar_title">台北一日遊</div>
-          <div class="navbar_options">
-            <div class="navbar_option">預定行程</div>
-            <div class="navbar_option">登入/註冊</div>
+      <div class="psuedo">
+        <div id="navbar">
+          <div class="container">
+            <div class="navbar_title"> <a href="/">台北一日遊</a></div>
+            <div class="navbar_options">
+              <div class="navbar_option">預定行程</div>
+              <div class="navbar_option sign">登入/註冊</div>
+              <div class="navbar_option signout inactive">登出</div>
+            </div>
           </div>
         </div>
       </div>
+      <script src="{{ url_for('static', filename='/scripts/nav.js') }}"></script>
       <div id="header" style="background-image: url({{ url_for('static', filename='imgs/header.png') }})">
         <div class="container">
           <div class="header_title">輕鬆享受台北一日悠閒</div>
@@ -48,6 +51,33 @@
       <div id="footer">
         <div class="footer_content">COPYRIGHT © 2021 台北一日遊</div>
       </div>
+      <div class="filter"></div>
+      <div class="box_container">
+        <div class="signin" id="box">
+          <div class="box_title">登入會員帳號</div>
+          <div class="box_cross"><img src="{{ url_for('static', filename='imgs/icon_close.png') }}"></div>
+          <form action="" method="">
+            <input required type="text" name="email" id="email" placeholder="輸入電子信箱">
+            <input required type="password" name="password" id="password" placeholder="輸入密碼">
+            <input type="submit" value="登入帳戶">
+          </form>
+          <div class="box_hint">還沒有帳戶？<span>點此註冊</span></div>
+          <div class="sign_status"></div>
+        </div>
+        <div class="signup inactive" id="box">
+          <div class="box_title">註冊會員帳號</div>
+          <div class="box_cross"><img src="{{ url_for('static', filename='imgs/icon_close.png') }}"></div>
+          <form action="/api/user" method="POST">
+            <input required type="text" name="name" id="name" placeholder="輸入姓名">
+            <input required type="text" name="email" id="email" placeholder="輸入電子信箱">
+            <input required type="password" name="password" id="password" placeholder="輸入密碼">
+            <input type="submit" value="註冊帳戶">
+          </form>
+          <div class="box_hint">已經有帳戶了？<span>點此登入</span></div>
+          <div class="sign_status"></div>
+        </div>
+      </div>
+      <script src="{{ url_for('static', filename='/scripts/sign.js') }}"></script>
     </div>
   </body>
   <script src="{{ url_for('static', filename='/scripts/index.js') }}"></script>

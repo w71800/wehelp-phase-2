@@ -1,9 +1,13 @@
 import json
-
+import jwt
+import datetime
+from contextlib import contextmanager
 from flask import *
+
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
+
 import mysql.connector as connector
 dbconfig = {
 	"host": "localhost",
@@ -33,7 +37,22 @@ def reform_attraction(raw):
 		"lng": lng,
 		"images": json.loads(images),
 	}
-		
+
+@contextmanager
+def connectToDB():
+	cursor = None
+	db = None
+	try:
+		db = connection_pool.get_connection()
+		cursor = db.cursor()
+
+		yield db, cursor
+	finally:
+		if cursor:
+			cursor.close()
+		if db:
+			db.close()
+
 # Pages
 @app.route("/")
 def index():
@@ -118,8 +137,6 @@ def api_attractions():
 		cursor.close()
 		return make_response(jsonify(response), 500)
 	
-	
-
 # 選取 id 的模式
 @app.route("/api/attraction/<attractionId>")
 def api_attraction＿id(attractionId):
@@ -188,7 +205,99 @@ def api_mrts():
 		db.close()
 		cursor.close()
 		return make_response(jsonify(response), 500)
-		
 
+# 註冊會員
+@app.route("/api/user", methods=["POST"])
+def api_user():
+	name, email, password = request.form.values()
+	with connectToDB() as (db, cursor):
+		sql = "select MAX(id) from members"
+		cursor.execute(sql)
+		max_id = cursor.fetchall()[0][0]
+
+		try:
+			sql = "INSERT into members(id, name, email, password) values(%s, %s, %s, %s)"
+			values = (max_id + 1, name, email, password, )
+			cursor.execute(sql, values)
+		
+		except connector.Error as e:
+			error_code = e.errno
+			error_msg = str(e)
+			
+			db.rollback()
+
+			http_code = 400 if error_code == 1062 else 500
+
+			response = { "error": True, "message": error_msg }
+			return make_response(jsonify(response), http_code)
+		else:
+			db.commit()
+
+			response = { "ok": True }
+			return make_response(jsonify(response), 200)
+
+# 會員登入或抓到登入狀態
+@app.route("/api/auth", methods=["GET", "PUT"])
+def api_auth():
+	method = request.method
+	key = "secret"
+	if(method == "GET"):
+		auth_header = request.headers.get("Authorization")
+		print(auth_header)
+		
+		if not auth_header or auth_header == "undefined":
+			response = { "data": None }
+			return make_response(jsonify(response), 200)
+		
+		token = auth_header.split()[1]
+		try:
+			result = jwt.decode(token, key, algorithms=["HS256"])
+			data = result.get("data")
+			response = { "data": data }
+		
+		except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+			response = { "data": None }
+
+		return make_response(jsonify(response), 200)
+
+
+	else:
+		# 抓到是否有對應的 email 和 password 是否正確
+		email, password = request.form.values()
+		print(request.form.values())
+
+		with connectToDB() as (db, cursor):
+			try:
+				sql = "SELECT id, email, name from members where email = (%s) and password = (%s)"
+				values = (email, password, )
+				cursor.execute(sql, values)
+				result = cursor.fetchall()
+
+				if len(result) == 0:
+					response = { "error": True, "message": "This email is not signed or the password is wrong." }
+					return make_response(jsonify(response), 400)
+				
+				id, email, name = result[0]
+				data = {
+					"id": id,
+					"email": email,
+					"name": name
+				}
+
+				exp_time = datetime.datetime.utcnow() + datetime.timedelta(days = 7)
+				encoded = jwt.encode({
+					"data": data,
+					"exp": exp_time
+				}, key, algorithm = "HS256")
+
+				response = { "token": encoded }
+				return make_response(jsonify(response), 200)
+
+			except connector.Error as e:
+				error_msg = str(e)
+
+				response = { "error": True, "message": error_msg }
+				return make_response(jsonify(response), 500)
+	
 
 app.run(host="0.0.0.0", port=3000, debug=True)

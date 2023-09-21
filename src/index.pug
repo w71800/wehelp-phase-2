@@ -7,13 +7,8 @@ html(lang="en")
     link(rel="stylesheet", href="{{url_for('static', filename='index.css')}}")
   body 
     #page-index
-      .psuedo
-      #navbar
-        .container
-          .navbar_title 台北一日遊
-          .navbar_options
-            .navbar_option 預定行程
-            .navbar_option 登入/註冊
+      include ./components/nav.pug
+      
       #header(
         style="background-image: url({{ url_for('static', filename='imgs/header.png') }})"
         )
@@ -27,6 +22,7 @@ html(lang="en")
               )
             .header_icon
               img(src="{{ url_for('static', filename='imgs/icon_search.png') }}")
+      
       #scroller
         .container
           .scroll
@@ -36,11 +32,14 @@ html(lang="en")
               img(src="{{ url_for('static', filename='imgs/forward.png') }}")
             .scroll_container
               .scroll_scroller
+      
       #main
         .container
           .content
           .status 
-      #footer
-        .footer_content COPYRIGHT © 2021 台北一日遊
+      
+      include ./components/footer.pug
+      include ./components/sign.pug
+      
 
   script(src="{{ url_for('static', filename='/scripts/index.js') }}")

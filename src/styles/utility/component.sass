@@ -1,0 +1,150 @@
+@use 'rwd'
+@use 'vars'
+  
+#navbar
+  z-index: 100
+  background-color: white
+  +vars.center
+  padding: 10px 0px
+  *
+    // border: 1px solid #000
+  position: fixed
+  top: 0
+  width: 100vw
+  .container
+    display: flex
+    justify-content: space-between
+  .navbar_title
+    font-size: 30px
+    font-weight: 700
+    color: vars.$color_primary
+    min-width: 150px
+  .navbar_options
+    display: flex
+    .navbar_option
+      +vars.center
+      cursor: pointer
+      font-size: 1rem
+      padding: 10px
+      min-width: 90px
+      &.sign
+        cursor: pointer
+      &.inactive
+        display: none
+    .navbar_hello
+      color: vars.$color_secondary
+      font-weight: 500
+      padding: 10px
+
+
+  a
+    text-decoration: none
+    color: vars.$color_primary
+
+#footer
+  background-color: vars.$color_secondary
+  padding: 40px 0px
+  +vars.center
+  .footer_content
+    font-weight: 700
+    color: white
+
+.filter
+  position: absolute
+  width: 100%
+  height: 100%
+  top: 0
+  background-color: rgba(black, .6)
+  z-index: 200
+  display: none
+.box_container
+  // margin: 0 auto
+  position: fixed
+  top: 100px
+  left: 50%
+  // border: 1px solid #000
+  width: 340px
+  transition: .6s
+  transition-timing-function: cubic-bezier(0.450, -0.600, 0.000, 0.745)
+  transform: translate(-50%, -200%)
+  // transform: translateX(-50%)
+  z-index: 220
+  #box
+    width: 100%
+    // border: 1px solid #000
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-direction: column
+    background-color: white
+    border-radius: 6px
+    overflow: hidden
+    &::before
+      content: ""
+      display: block
+      width: 100%
+      height: 10px
+      background: linear-gradient(270deg, #337788 0%, #66AABB 100%)
+  .box_title
+    font-size: 1.5rem
+    font-weight: 700
+    color: #666
+    padding: 15px
+  form
+    *
+      display: block
+  input
+    width: 310px
+    height: 47px
+    margin-bottom: 10px
+    border-radius: 5px
+    border: none
+    font-size: 1rem
+  input[type="text"], input[type="password"]
+    border: 1px solid #CCCCCC
+    color: #757575
+    padding: 15px
+    font-weight: 500
+    &::placeholder
+      color: #757575
+  input[type="submit"]
+    margin: 0 auto
+    color: white
+    background: vars.$color_primary
+    cursor: pointer
+  .box_hint
+    color: #666
+    font-weight: 500
+    padding: 15px
+    padding-bottom: 0px
+    span
+      cursor: pointer
+      &:hover
+        color: vars.$color_primary
+  .sign_status
+    padding: 10px
+    &.success
+      color: green
+    &.error
+      color: red
+  .box_cross
+    cursor: pointer
+    // border: 1px solid #000
+    position: absolute
+    top: 20px
+    right: 10px
+
+  #box
+    &.inactive
+      display: none
+      
+.filter
+  &.active
+    display: block
+.box_container
+  &.active
+    transition-timing-function: cubic-bezier(0.855, 0.235, 0.385, 1.650)
+    transform: translate(-50%, 0%)
+  
+  
+    

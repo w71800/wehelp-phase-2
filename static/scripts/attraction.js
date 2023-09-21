@@ -7,6 +7,7 @@ const carouselImgs = document.querySelector(".carousel-imgs").children
 const carouselIndicators = document.querySelector(".carousel-indicators").children
 const timeIpnuts = document.querySelectorAll(".input-time input")
 const fee = document.querySelector(".fee")
+const signout = document.querySelector(".signout")
 let carouselStatus = {
   now: 0,
   previousIsActive: false,
@@ -114,7 +115,6 @@ function carouselRun(direction){
 }
 
 init()
-
 
 
 
