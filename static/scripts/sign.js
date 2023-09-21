@@ -40,15 +40,28 @@ function factorySign(){
       if(result?.error){
         signinStatus.classList.toggle("error")
         signinStatus.textContent = "電子信箱或密碼錯誤"
+
+        setTimeout(()=>{
+          signinStatus.classList.remove("success")
+          signinStatus.classList.remove("error")
+          signinStatus.textContent = ""
+        }, 1000)
       }else{
         signinStatus.classList.toggle("success")
         signinStatus.textContent = "登入成功"
         localStorage.setItem("token", result.token)
+        
         setTimeout(()=>{
           let currentURL = window.location.href;
           window.location.href = currentURL
         }, 1000)
       }
+
+      Array.from(signinForm.elements).forEach( input => {
+        if(input.type != "submit"){
+          input.value = ""
+        }
+      })
     })
 
     signupForm.addEventListener("submit", async(e) => {
@@ -62,6 +75,12 @@ function factorySign(){
         signupStatus.classList.toggle("success")
         signupStatus.textContent = "註冊成功"
 
+        Array.from(signupForm.elements).forEach( input => {
+          if(input.type != "submit"){
+            input.value = ""
+          }
+        })
+
         // const signBox = document.querySelectorAll("#box")
         // signBox.forEach( box => {
         //   box.classList.toggle("inactive")
@@ -74,7 +93,7 @@ function factorySign(){
 
       }, 1000)
 
-      // signupForm.reset()
+      
     })
     
     

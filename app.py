@@ -211,15 +211,14 @@ def api_mrts():
 def api_user():
 	name, email, password = request.form.values()
 	with connectToDB() as (db, cursor):
+		sql = "select MAX(id) from members"
+		cursor.execute(sql)
+		max_id = cursor.fetchall()[0][0]
+
 		try:
-			sql = "INSERT into members(name, email, password) values(%s, %s, %s)"
-			values = (name, email, password, )
+			sql = "INSERT into members(id, name, email, password) values(%s, %s, %s, %s)"
+			values = (max_id + 1, name, email, password, )
 			cursor.execute(sql, values)
-			
-			db.commit()
-			
-			response = { "ok": True }
-			return make_response(jsonify(response), 200)
 		
 		except connector.Error as e:
 			error_code = e.errno
@@ -231,6 +230,11 @@ def api_user():
 
 			response = { "error": True, "message": error_msg }
 			return make_response(jsonify(response), http_code)
+		else:
+			db.commit()
+
+			response = { "ok": True }
+			return make_response(jsonify(response), 200)
 
 # 會員登入或抓到登入狀態
 @app.route("/api/auth", methods=["GET", "PUT"])
