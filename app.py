@@ -224,6 +224,8 @@ def api_user():
 		except connector.Error as e:
 			error_code = e.errno
 			error_msg = str(e)
+			
+			db.rollback()
 
 			http_code = 400 if error_code == 1062 else 500
 
@@ -237,8 +239,9 @@ def api_auth():
 	key = "secret"
 	if(method == "GET"):
 		auth_header = request.headers.get("Authorization")
+		print(auth_header)
 		
-		if not auth_header:
+		if not auth_header or auth_header == "undefined":
 			response = { "data": None }
 			return make_response(jsonify(response), 200)
 		

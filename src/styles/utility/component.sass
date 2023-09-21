@@ -31,6 +31,11 @@
         cursor: pointer
       &.inactive
         display: none
+    .navbar_hello
+      color: vars.$color_secondary
+      font-weight: 500
+      padding: 10px
+
 
   a
     text-decoration: none
@@ -51,6 +56,7 @@
   top: 0
   background-color: rgba(black, .6)
   z-index: 200
+  display: none
 .box_container
   // margin: 0 auto
   position: fixed
@@ -94,7 +100,7 @@
     border-radius: 5px
     border: none
     font-size: 1rem
-  input[type="text"]
+  input[type="text"], input[type="password"]
     border: 1px solid #CCCCCC
     color: #757575
     padding: 15px
@@ -110,10 +116,17 @@
     color: #666
     font-weight: 500
     padding: 15px
+    padding-bottom: 0px
     span
       cursor: pointer
       &:hover
         color: vars.$color_primary
+  .sign_status
+    padding: 10px
+    &.success
+      color: green
+    &.error
+      color: red
   .box_cross
     cursor: pointer
     // border: 1px solid #000
@@ -126,8 +139,8 @@
       display: none
       
 .filter
-  &.inactive
-    display: none
+  &.active
+    display: block
 .box_container
   &.active
     transition-timing-function: cubic-bezier(0.855, 0.235, 0.385, 1.650)

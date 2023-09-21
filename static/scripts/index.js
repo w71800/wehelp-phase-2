@@ -4,8 +4,6 @@ const scrollContainer = document.querySelector(".scroll_container")
 const content = document.querySelector(".content")
 const searchBtn = document.querySelector(".header_icon")
 const showStatus = document.querySelector(".status")
-const sign = document.querySelector(".sign")
-const signout = document.querySelector(".signout")
 let directionCounter = {}
 let queryStatus = {
   nextPage: 0,
@@ -233,11 +231,6 @@ function init(){
   })
   getData()
 
-  if(localStorage.token){
-    sign.classList.add("inactive")
-    signout.classList.remove("inactive")
-  }
-
 }
 // 生成有防抖保護的 function
 function debounce(func, delay) {
@@ -257,19 +250,3 @@ function debounce(func, delay) {
 
 init()
 let debounceGetData = debounce(getData, 300)
-
-
-sign.addEventListener("click", ()=>{
-  let filter = document.querySelector(".filter")
-  filter.classList.toggle("inactive")
-  setTimeout(()=>{
-    let boxContainer = document.querySelector(".box_container")
-    boxContainer.classList.toggle("active")
-  },100)
-})
-
-signout.addEventListener("click", ()=>{
-  localStorage.clear()
-  let currentURL = window.location.href
-  window.location.href = currentURL
-})

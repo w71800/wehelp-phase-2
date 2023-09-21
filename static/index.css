@@ -99,6 +99,11 @@
 #navbar .navbar_options .navbar_option.inactive {
   display: none;
 }
+#navbar .navbar_options .navbar_hello {
+  color: #757575;
+  font-weight: 500;
+  padding: 10px;
+}
 #navbar a {
   text-decoration: none;
   color: #448899;
@@ -123,6 +128,7 @@
   top: 0;
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 200;
+  display: none;
 }
 
 .box_container {
@@ -169,13 +175,13 @@
   border: none;
   font-size: 1rem;
 }
-.box_container input[type=text] {
+.box_container input[type=text], .box_container input[type=password] {
   border: 1px solid #CCCCCC;
   color: #757575;
   padding: 15px;
   font-weight: 500;
 }
-.box_container input[type=text]::placeholder {
+.box_container input[type=text]::placeholder, .box_container input[type=password]::placeholder {
   color: #757575;
 }
 .box_container input[type=submit] {
@@ -188,12 +194,22 @@
   color: #666;
   font-weight: 500;
   padding: 15px;
+  padding-bottom: 0px;
 }
 .box_container .box_hint span {
   cursor: pointer;
 }
 .box_container .box_hint span:hover {
   color: #448899;
+}
+.box_container .sign_status {
+  padding: 10px;
+}
+.box_container .sign_status.success {
+  color: green;
+}
+.box_container .sign_status.error {
+  color: red;
 }
 .box_container .box_cross {
   cursor: pointer;
@@ -205,8 +221,8 @@
   display: none;
 }
 
-.filter.inactive {
-  display: none;
+.filter.active {
+  display: block;
 }
 
 .box_container.active {
