@@ -38,6 +38,13 @@
   }
 }
 @media screen and (max-width: 500px) {
+  #navbar .container .navbar_options .navbar_option {
+    padding: 0;
+  }
+  #navbar .container .navbar_hello {
+    display: none;
+  }
+
   #page-index #main .container .content {
     display: flex;
     justify-content: flex-start;
@@ -74,6 +81,7 @@
 #navbar .container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 #navbar .navbar_title {
   font-size: 30px;
@@ -85,13 +93,11 @@
   display: flex;
 }
 #navbar .navbar_options .navbar_option {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
   cursor: pointer;
   font-size: 1rem;
   padding: 10px;
-  min-width: 90px;
+  min-width: 70px;
 }
 #navbar .navbar_options .navbar_option.sign {
   cursor: pointer;
