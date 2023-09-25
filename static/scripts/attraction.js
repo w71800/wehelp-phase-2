@@ -21,8 +21,12 @@ carouselBtns.forEach( btn => {
 })
 timeIpnuts.forEach( input => {
   input.addEventListener("click", function(){
-    let value = input.value
-    fee.textContent = `新台幣 ${value} 元`
+    let price = input.dataset.price
+    fee.textContent = `新台幣 ${price} 元`
+    
+    let feeInput = document.querySelector(".input-fee input")
+    feeInput.value = price
+    console.log(feeInput.value);
   })
 
   

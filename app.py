@@ -53,6 +53,25 @@ def connectToDB():
 		if db:
 			db.close()
 
+# 取得 Token
+def get_token():
+	auth_header = request.headers.get("Authorization")
+
+	# print(auth_header)
+	if not auth_header or auth_header == "undefined":
+		token = None
+	else:
+		token = auth_header.split()[1]	
+	
+	return token
+
+def check_auth(token, key="secret"):
+	if not token or token == "undefined":
+		return False
+	else:
+		user = jwt.decode(token, key, algorithms=["HS256"])["data"]
+		return user
+
 # Pages
 @app.route("/")
 def index():
@@ -242,14 +261,12 @@ def api_auth():
 	method = request.method
 	key = "secret"
 	if(method == "GET"):
-		auth_header = request.headers.get("Authorization")
-		print(auth_header)
+		token = get_token()
 		
-		if not auth_header or auth_header == "undefined":
+		if not token:
 			response = { "data": None }
 			return make_response(jsonify(response), 200)
 		
-		token = auth_header.split()[1]
 		try:
 			result = jwt.decode(token, key, algorithms=["HS256"])
 			data = result.get("data")
@@ -299,5 +316,63 @@ def api_auth():
 				response = { "error": True, "message": error_msg }
 				return make_response(jsonify(response), 500)
 	
+@app.route("/api/booking", methods=["GET", "POST", "DELETE"])
+def api_booking():
+	method = request.method
+
+	is_auth = check_auth(get_token())
+	if not is_auth:
+		response = {
+  			"error": True,
+  			"message": "User is not signin."
+			}
+		return make_response(jsonify(response), 403)
+	else:
+		user_id = is_auth["id"]
+		print(user_id)
+		
+	if method == "GET":
+		with connectToDB() as (db, cursor):
+			try:
+				sql = """
+							SELECT resorts.id, resorts.name, resorts.address, resorts.images, date, time, price
+							FROM bookings 
+							LEFT JOIN resorts ON resorts.id = bookings.resort_id
+							WHERE bookings.member_id = (%s);
+							"""
+				cursor.execute(sql, (user_id, ))
+				result = cursor.fetchall()
+
+				if len(result == 0):
+					response = { "data": None }
+					return make_response(jsonify(response))
+
+				bookings = []
+				for item in result:
+					attraction_id, attraction_name, attraction_address, attraction_images, date, time, price = item
+					data = {
+						"attraction": {
+							"id": attraction_id,
+							"name": attraction_name,
+							"address": attraction_address,
+							"image": attraction_images
+						},
+						"data": date,
+						"time": time,
+						"price": price
+					}
+					bookings.append(data)
+				else:
+					# 先抓一個
+					return make_response(jsonify(bookings[0]))
+			except connector.Error as e:
+				print(e)
+				
+	if method == "POST":
+		pass
+	if method == "DELETE":
+		pass
+	
+	return "Hello"
 
 app.run(host="0.0.0.0", port=3000, debug=True)
