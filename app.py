@@ -65,6 +65,7 @@ def get_token():
 	
 	return token
 
+
 def check_auth(token, key="secret"):
 	if not token or token == "undefined":
 		return False
@@ -324,7 +325,7 @@ def api_booking():
 	if not is_auth:
 		response = {
   			"error": True,
-  			"message": "User is not signin."
+  			"message": "Not signin."
 			}
 		return make_response(jsonify(response), 403)
 	else:
@@ -335,7 +336,7 @@ def api_booking():
 		with connectToDB() as (db, cursor):
 			try:
 				sql = """
-							SELECT resorts.id, resorts.name, resorts.address, resorts.images, date, time, price
+							SELECT id, resorts.id, resorts.name, resorts.address, resorts.images, date, time, price
 							FROM bookings 
 							LEFT JOIN resorts ON resorts.id = bookings.resort_id
 							WHERE bookings.member_id = (%s);
@@ -349,8 +350,9 @@ def api_booking():
 
 				bookings = []
 				for item in result:
-					attraction_id, attraction_name, attraction_address, attraction_images, date, time, price = item
+					id, attraction_id, attraction_name, attraction_address, attraction_images, date, time, price = item
 					data = {
+						"id": id,
 						"attraction": {
 							"id": attraction_id,
 							"name": attraction_name,
@@ -366,13 +368,60 @@ def api_booking():
 					# 先抓一個
 					return make_response(jsonify(bookings[0]))
 			except connector.Error as e:
-				print(e)
-				
+				response = {
+					"error": True,
+					"message": str(e)
+				}
+				return make_response(jsonify(response), 500)
+
 	if method == "POST":
-		pass
+		data = request.form.values()
+		with connectToDB() as (db, cursor):
+			try:
+				# 或許可以處理抓到最大值，將 id 以最大值來處理
+				attraction_id, date, time, price = data
+				sql = """
+							INSERT into bookings(member_id, resort_id, date, time, price)
+							VALUES(%s, %s, %s, %s, %s)
+							"""
+				value = (user_id, attraction_id, date, time, price, )
+				cursor.execute(sql, value)
+			
+				db.commit()
+
+				response = { "ok": True }
+				return make_response(jsonify(response))
+			except connector.Error as e:
+				db.rollback()
+
+				response = {
+  				"error": True,
+  				"message": str(e)
+				}
+				return make_response(jsonify(response), 400)
+		
 	if method == "DELETE":
-		pass
-	
-	return "Hello"
+		
+		with connectToDB() as (db, cursor):
+			try:
+				# 抓到訂單 id（多 bookings 時會用到，將 id 包在請求 body 中，正常版使用使用者 id 來處理）
+				# id = request.body.id
+				sql = "DELETE from bookings WHERE member_id = (%s)"
+				cursor.execute(sql, (user_id, ))
+				
+				# sql = "DELETE from bookings WHERE id = (%s)"
+				# cursor.execute(sql, (id, ))
+
+				db.commit()
+				response = { "ok": True }
+				return make_response(jsonify(response))
+			
+			except connector.Error as e:
+				response = {
+					"error": True,
+					"message": str(e)
+				}
+				return make_response(jsonify(response), 500)
+
 
 app.run(host="0.0.0.0", port=3000, debug=True)
