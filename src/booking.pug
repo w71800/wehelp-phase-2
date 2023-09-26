@@ -1,0 +1,64 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Document
+    link(rel="stylesheet", href="{{url_for('static', filename='booking.css')}}")
+  body 
+    #page-booking
+      include ./components/nav.pug
+      include ./components/sign.pug
+      #bookings 
+        .container
+          .title 您好，嗙嗙，待預訂的行程如下：
+          .booking
+            img(src="{{url_for('static', filename='imgs/picture.png')}}", alt="")
+            .info
+              .info_name 台北一日遊：
+                span 平安鐘
+              .info_date 日期：
+                span 2021-04-23
+              .info_time 時間：
+                span 早上 9 點到下午 4 點
+              .info_fee 費用：
+                span 新台幣 2000 元
+              .info_address 地點：
+                span 臺北市 大安區忠孝東路4段
+          
+      #info
+        .container
+          .title 您的聯絡資訊
+          form.contact
+            .wrapper
+              label(for="") 聯絡姓名：
+              input
+            .wrapper
+              label(for="") 連絡信箱：
+              input
+            .wrapper
+              label(for="") 手機號碼：
+              input
+            .hint 請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。
+        .container
+          .title 信用卡付款資訊
+          form.pay
+            .wrapper
+              label(for="") 卡片號碼：
+              input(type="password")
+            .wrapper
+              label(for="") 過期時間：
+              input(placeholder="MM/YY")
+            .wrapper
+              label(for="") 驗證密碼：
+              input(placeholder="CVV")
+        .container
+          .submit
+            .total 總價：新台幣 2000 元
+            .button 確認訂購並付款
+
+
+      include ./components/footer.pug
+  script(src="{{ url_for('static', filename='/scripts/booking.js') }}")
+
+    
