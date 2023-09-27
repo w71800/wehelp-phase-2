@@ -3,6 +3,13 @@
 @use './utility/component'
 @use './utility/reset'
 
+#page-booking
+  #navbar
+    border-bottom: 1px solid #E8E8E8
+  .psuedo
+    margin-bottom: 40px
+
+
 #bookings
   display: flex
   justify-content: center
@@ -16,14 +23,14 @@
     font-weight: 700
     font-size: 19px
     color: vars.$color_secondary
-    padding-top: 10px
+    // padding-top: 30px
     left: -10px
   .booking
     display: flex
     margin-bottom: 20px
     *
       // border: 1px solid #000
-    img
+    img.attraction
       width: 250px
       object-fit: cover
     .info
@@ -42,6 +49,18 @@
         span
           color: inherit
           font-weight: inherit
+    .delete
+      width: 30px
+      height: 30px
+      // border: 1px solid #000
+      position: absolute
+      right: 0
+      top: 0
+      cursor: pointer
+      img
+        width: 100%
+        height: 100%
+
 
 #info
   *
@@ -91,7 +110,8 @@
     cursor: pointer
   .total
     margin-bottom: 20px
-    text-align: center
+    text-align: right
+    font-weight: 700
   .container
     &:last-child
       height: 100px
@@ -99,3 +119,9 @@
       // border: 1px solid #000
 
 
+.status
+  color: vars.$color_secondary
+  left: -10px
+  display: none
+  &.active
+    display: block

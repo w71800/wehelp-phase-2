@@ -11,20 +11,8 @@ html(lang="en")
       include ./components/sign.pug
       #bookings 
         .container
-          .title 您好，嗙嗙，待預訂的行程如下：
-          .booking
-            img(src="{{url_for('static', filename='imgs/picture.png')}}", alt="")
-            .info
-              .info_name 台北一日遊：
-                span 平安鐘
-              .info_date 日期：
-                span 2021-04-23
-              .info_time 時間：
-                span 早上 9 點到下午 4 點
-              .info_fee 費用：
-                span 新台幣 2000 元
-              .info_address 地點：
-                span 臺北市 大安區忠孝東路4段
+          .title 您好，待預訂的行程如下：
+          .status 目前沒有任何待預訂的行程
           
       #info
         .container
@@ -51,7 +39,7 @@ html(lang="en")
               input(placeholder="MM/YY")
             .wrapper
               label(for="") 驗證密碼：
-              input(placeholder="CVV")
+              input(placeholder="CVV" maxlength=3)
         .container
           .submit
             .total 總價：新台幣 2000 元
@@ -59,6 +47,6 @@ html(lang="en")
 
 
       include ./components/footer.pug
-  script(src="{{ url_for('static', filename='/scripts/booking.js') }}")
+  script(src="{{ url_for('static', filename='/scripts/booking.js') }}" type="module")
 
     

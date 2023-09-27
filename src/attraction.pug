@@ -24,7 +24,8 @@ html(lang="en")
             .panel
               .panel-title 訂購導覽行程
               .panel-subtitle 以此景點為中心的一日行程，帶您探索城市角落故事
-              form(action="/asdsad", method="post") 
+              form(action="/", method="post") 
+                input(name="attractionId" value="" style="display: none")
                 .input-date
                   label(for="date") 選擇日期：
                   .wrapper
@@ -34,6 +35,8 @@ html(lang="en")
                       type="text" 
                       placeholder="yyyy/mm/dd"
                       id="date"
+                      name="date"
+                      required
                       )
                     img.icon(src="{{ url_for('static', filename='imgs/icon_calendar.png') }}")
                 .input-time
@@ -47,7 +50,7 @@ html(lang="en")
                 .input-fee 
                   label(for="fee") 導覽費用：
                   span.fee 新台幣 2000 元
-                  input(type="number" id="fee" value=2000 min)
+                  input(type="number" id="fee" name="fee" value=2000 min )
                 input.panel-button(
                   type="submit" 
                   value="開始預約行程"
@@ -67,4 +70,4 @@ html(lang="en")
       include ./components/footer.pug
 
   
-  script(src="{{ url_for('static', filename='/scripts/attraction.js') }}")
+  script(src="{{ url_for('static', filename='/scripts/attraction.js') }}" type="module")

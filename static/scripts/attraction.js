@@ -1,3 +1,5 @@
+import { showSign, checkSign } from "./utility.js";
+
 const url = window.location.href;
 const id = url.match(/attraction\/(\d+)/)[1]
 const carouselBtns = document.querySelectorAll(".carousel-btn")
@@ -8,6 +10,8 @@ const carouselIndicators = document.querySelector(".carousel-indicators").childr
 const timeIpnuts = document.querySelectorAll(".input-time input")
 const fee = document.querySelector(".fee")
 const signout = document.querySelector(".signout")
+const submit = document.querySelector("input.panel-button[type='submit']")
+const attractionForm = document.querySelector("#page-attraction .area form")
 let carouselStatus = {
   now: 0,
   previousIsActive: false,
@@ -32,6 +36,40 @@ timeIpnuts.forEach( input => {
   
 })
 
+submit.addEventListener("click", e => {
+  e.preventDefault()
+  
+  let formData = new FormData(attractionForm)
+  for(let data of formData){
+    if(data[1] == ""){
+      alert("日期未填寫")
+      return
+    }
+  }
+
+  checkSign()
+    .then( data => {
+      if(data == null){
+        showSign()
+      }else{
+        fetch('/api/booking',{
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+          },
+          body: formData,
+        })
+        .then( res => res.json() )
+        .then( res => {
+          if(res.ok){
+            window.location.href = "/booking"
+          }else{
+            alert(res.message)
+          }
+        })
+      }
+    })
+})
 
 function getData(){
   return fetch(`/api/attraction/${id}`)
@@ -80,6 +118,7 @@ function render(data){
 async function init(){
   let data = await getData()
   render(data)
+  document.querySelector("input[name='attractionId']").value = window.location.href.match(/\/(\d+)$/)[1]
 }
 
 function carouselRun(direction){
@@ -117,6 +156,7 @@ function carouselRun(direction){
   // carouselStatus.now += 1
   // console.log(carouselStatus.now);
 }
+
 
 init()
 

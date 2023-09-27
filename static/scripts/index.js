@@ -156,7 +156,7 @@ function getData(){
     }else{
       let { data, nextPage } = res
       
-      for(item of data){
+      for(let item of data){
         let block = makeBlock(item)
         content.appendChild(block)
       }
@@ -208,13 +208,12 @@ function renderStatus(statusStr){
 
 }
 function init(){
-  // 發出驗證
   fetch("api/mrts")
   .then( res => res.json() )
   .then( res => {
     let { data } = res
 
-    for(item of data){
+    for(let item of data){
       let elMrt = document.createElement("div")
       elMrt.classList.add("mrt")
       elMrt.textContent = item

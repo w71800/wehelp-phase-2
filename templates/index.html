@@ -13,14 +13,14 @@
           <div class="container">
             <div class="navbar_title"> <a href="/">台北一日遊</a></div>
             <div class="navbar_options">
-              <div class="navbar_option">預定行程</div>
+              <div class="navbar_option booking">預定行程</div>
               <div class="navbar_option sign">登入/註冊</div>
               <div class="navbar_option signout inactive">登出</div>
             </div>
           </div>
         </div>
       </div>
-      <script src="{{ url_for('static', filename='/scripts/nav.js') }}"></script>
+      <script src="{{ url_for('static', filename='/scripts/nav.js') }}" type="module"></script>
       <div id="header" style="background-image: url({{ url_for('static', filename='imgs/header.png') }})">
         <div class="container">
           <div class="header_title">輕鬆享受台北一日悠閒</div>
@@ -80,5 +80,5 @@
       <script src="{{ url_for('static', filename='/scripts/sign.js') }}"></script>
     </div>
   </body>
-  <script src="{{ url_for('static', filename='/scripts/index.js') }}"></script>
+  <script src="{{ url_for('static', filename='/scripts/index.js') }}" type="module"></script>
 </html>

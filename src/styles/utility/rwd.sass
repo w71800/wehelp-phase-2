@@ -29,6 +29,32 @@
           padding: 15px 15px
         .carousel-imgs
           overflow: visible
+  
+  #page-booking
+    #bookings, #info
+      padding: 0px 15px
+      .container
+        padding: 0
+    #bookings
+      .title
+        left: 0
+      .booking
+        display: block
+        img.attraction
+          width: 100%
+          margin-bottom: 20px
+      .info
+        padding: 0
+      .delete
+        top: calc(100% - 30px)
+    #info
+      .container
+        padding-bottom: 40px
+      .container
+        &:last-child
+          padding-bottom: 0px
+      .submit
+        right: 0
 
 @media screen and (max-width: 500px)
   #navbar
@@ -36,13 +62,17 @@
       .navbar_options
         .navbar_option
           padding: 0
+          margin-right: 10px
       .navbar_hello
         display: none
+
   #page-index
     #main
       .container
         .content
           +vars.setBlockNums(1)
+
+  
 
 @media screen and (max-width: 360px)
   #page-index
@@ -57,5 +87,8 @@
       .container
         .carousel
           height: 360px
+
+  
+
 
   
