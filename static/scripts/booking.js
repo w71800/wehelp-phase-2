@@ -85,7 +85,10 @@ function makeBooking(dataObj) {
   let deleteButton = document.createElement("div");
   deleteButton.classList.add("delete");
   deleteButton.addEventListener("click", ()=>{
-    confirm("確定要刪除嗎？")
+    let r = confirm("確定要刪除嗎？")
+    if(r == false) {
+      return
+    }
 
     fetch("/api/booking", {
       method: "DELETE",
@@ -128,7 +131,7 @@ function getBookings(){
 }
 
 function render(datas){
-  if(datas.data == null && datas.data != undefined){
+  if(datas.data === null){
     bookingsStatus.classList.add("active")
     totalPrice.textContent = `總價：新台幣 ${0} 元`
     
