@@ -2,7 +2,10 @@ import { checkSign } from './utility.js'
 const bookingsContainer = document.querySelector("#bookings .container")
 const bookingsStatus = document.querySelector("#bookings .container .status")
 const title = document.querySelector("#bookings .container .title")
+const bookingInfo = document.querySelector("#page-booking #info")
 const totalPrice = document.querySelector("#info .container .total")
+const bookingFooter = document.querySelector("#page-booking #footer")
+let isbookingEmpty = true
 
 async function init() {
   let isSign = await checkSign()
@@ -10,8 +13,18 @@ async function init() {
 
   if(isSign){
     title.textContent = `您好，${isSign.name}，待預訂的行程如下：`
+    
     getBookings()
-      .then( bookings => render(bookings) )
+      .then( bookings => {
+        render(bookings)
+          .then( result => {
+            if(result == "nothing"){
+              let elementRect = bookingFooter.getBoundingClientRect() 
+              let distanceToBottom = window.innerHeight - elementRect.top
+              bookingFooter.style.height = `${distanceToBottom}px`
+            }
+          })
+      } )
   }else{
     window.location.href = "/"
   }
@@ -131,21 +144,35 @@ function getBookings(){
 }
 
 function render(datas){
-  if(datas.data === null){
-    bookingsStatus.classList.add("active")
-    totalPrice.textContent = `總價：新台幣 ${0} 元`
+  let promise = new Promise((resolve, reject) => {
     
-    return
-  }
-
-  for(let booking of datas){
-    console.log(booking.data);
-    bookingsContainer.append(makeBooking(booking.data))
-  }
-
-  bookingsStatus.classList.remove("active")
-  let total = datas.reduce((total, currentObj) => total + currentObj.data.price, 0)
-  totalPrice.textContent = `總價：新台幣 ${total} 元`
+    if(datas.data === null){
+      bookingsStatus.classList.add("active")
+      totalPrice.textContent = `總價：新台幣 ${0} 元`
+      bookingInfo.classList.add("inactive")
+      bookingsContainer.classList.add("inactive")
+      bookingFooter.classList.add("fill")
+      
+      resolve("nothing")
+      return 
+    }
+  
+    for(let booking of datas){
+      console.log(booking.data);
+      bookingsContainer.append(makeBooking(booking.data))
+    }
+  
+    bookingsStatus.classList.remove("active")
+    let total = datas.reduce((total, currentObj) => total + currentObj.data.price, 0)
+    totalPrice.textContent = `總價：新台幣 ${total} 元`
+    bookingInfo.classList.remove("inactive")
+    bookingsContainer.classList.remove("inactive")
+    bookingFooter.classList.remove("fill")
+    
+    resolve("done")
+  })
+  
+  return promise
 }
 
 
