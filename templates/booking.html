@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='booking.css')}}">
+  </head>
+  <body> 
+    <div id="page-booking">
+      <div class="psuedo">
+        <div id="navbar">
+          <div class="container">
+            <div class="navbar_title"> <a href="/">台北一日遊</a></div>
+            <div class="navbar_options">
+              <div class="navbar_option booking">預定行程</div>
+              <div class="navbar_option sign">登入/註冊</div>
+              <div class="navbar_option signout inactive">登出</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="{{ url_for('static', filename='/scripts/nav.js') }}" type="module"></script>
+      <div class="filter"></div>
+      <div class="box_container">
+        <div class="signin" id="box">
+          <div class="box_title">登入會員帳號</div>
+          <div class="box_cross"><img src="{{ url_for('static', filename='imgs/icon_close.png') }}"></div>
+          <form action="" method="">
+            <input required type="text" name="email" id="email" placeholder="輸入電子信箱">
+            <input required type="password" name="password" id="password" placeholder="輸入密碼">
+            <input type="submit" value="登入帳戶">
+          </form>
+          <div class="box_hint">還沒有帳戶？<span>點此註冊</span></div>
+          <div class="sign_status"></div>
+        </div>
+        <div class="signup inactive" id="box">
+          <div class="box_title">註冊會員帳號</div>
+          <div class="box_cross"><img src="{{ url_for('static', filename='imgs/icon_close.png') }}"></div>
+          <form action="/api/user" method="POST">
+            <input required type="text" name="name" id="name" placeholder="輸入姓名">
+            <input required type="text" name="email" id="email" placeholder="輸入電子信箱">
+            <input required type="password" name="password" id="password" placeholder="輸入密碼">
+            <input type="submit" value="註冊帳戶">
+          </form>
+          <div class="box_hint">已經有帳戶了？<span>點此登入</span></div>
+          <div class="sign_status"></div>
+        </div>
+      </div>
+      <script src="{{ url_for('static', filename='/scripts/sign.js') }}"></script>
+      <div id="bookings"> 
+        <div class="container">
+          <div class="title">您好，待預訂的行程如下：</div>
+          <div class="status">目前沒有任何待預訂的行程</div>
+        </div>
+      </div>
+      <div id="info">
+        <div class="container">
+          <div class="title">您的聯絡資訊</div>
+          <form class="contact">
+            <div class="wrapper">
+              <label for="">聯絡姓名：</label>
+              <input>
+            </div>
+            <div class="wrapper">
+              <label for="">連絡信箱：</label>
+              <input>
+            </div>
+            <div class="wrapper">
+              <label for="">手機號碼：</label>
+              <input>
+            </div>
+            <div class="hint">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
+          </form>
+        </div>
+        <div class="container">
+          <div class="title">信用卡付款資訊</div>
+          <form class="pay">
+            <div class="wrapper">
+              <label for="">卡片號碼：</label>
+              <input type="password">
+            </div>
+            <div class="wrapper">
+              <label for="">過期時間：</label>
+              <input placeholder="MM/YY">
+            </div>
+            <div class="wrapper">
+              <label for="">驗證密碼：</label>
+              <input placeholder="CVV" maxlength="3">
+            </div>
+          </form>
+        </div>
+        <div class="container">
+          <div class="submit">
+            <div class="total">總價：新台幣 0 元</div>
+            <div class="button">確認訂購並付款</div>
+          </div>
+        </div>
+      </div>
+      <div id="footer">
+        <div class="footer_content">COPYRIGHT © 2021 台北一日遊</div>
+      </div>
+    </div>
+  </body>
+  <script src="{{ url_for('static', filename='/scripts/booking.js') }}" type="module"></script>
+</html>

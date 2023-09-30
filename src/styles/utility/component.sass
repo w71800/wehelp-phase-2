@@ -14,6 +14,7 @@
   .container
     display: flex
     justify-content: space-between
+    align-items: center
   .navbar_title
     font-size: 30px
     font-weight: 700
@@ -22,11 +23,12 @@
   .navbar_options
     display: flex
     .navbar_option
-      +vars.center
+      // +vars.center
+      text-align: center
       cursor: pointer
       font-size: 1rem
       padding: 10px
-      min-width: 90px
+      min-width: 70px
       &.sign
         cursor: pointer
       &.inactive
@@ -42,6 +44,7 @@
     color: vars.$color_primary
 
 #footer
+  width: 100%
   background-color: vars.$color_secondary
   padding: 40px 0px
   +vars.center
