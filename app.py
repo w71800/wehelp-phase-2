@@ -430,5 +430,19 @@ def api_booking():
 				}
 				return make_response(jsonify(response), 500)
 
+@app.route("/api/order", methods=["POST"])
+def api_order():
+	is_auth = check_auth(get_token())
+	if not is_auth:
+		response = {
+  			"error": True,
+  			"message": "Not signin."
+			}
+		return make_response(jsonify(response), 403)
+	else:
+		user_id = is_auth["id"]
+
+	order = request.get_json()
+	return make_response(jsonify({"hello": True}), 200)
 
 app.run(host="0.0.0.0", port=3000, debug=True)

@@ -60,35 +60,30 @@
           <form class="contact">
             <div class="wrapper">
               <label for="">聯絡姓名：</label>
-              <input>
+              <input name="name" value="嗙">
             </div>
             <div class="wrapper">
               <label for="">連絡信箱：</label>
-              <input>
+              <input name="email" value="test@admin">
             </div>
             <div class="wrapper">
               <label for="">手機號碼：</label>
-              <input>
+              <input name="phone" value="0900000000">
             </div>
             <div class="hint">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
           </form>
         </div>
         <div class="container">
           <div class="title">信用卡付款資訊</div>
-          <form class="pay">
-            <div class="wrapper">
-              <label for="">卡片號碼：</label>
-              <input type="password">
-            </div>
-            <div class="wrapper">
-              <label for="">過期時間：</label>
-              <input placeholder="MM/YY">
-            </div>
-            <div class="wrapper">
-              <label for="">驗證密碼：</label>
-              <input placeholder="CVV" maxlength="3">
-            </div>
-          </form>
+          <div class="wrapper">
+            <div class="tpfield" id="card-number"></div>
+          </div>
+          <div class="wrapper">
+            <div class="tpfield" id="card-expiration-date"></div>
+          </div>
+          <div class="wrapper">
+            <div class="tpfield" id="card-ccv"></div>
+          </div>
         </div>
         <div class="container">
           <div class="submit">
@@ -102,5 +97,6 @@
       </div>
     </div>
   </body>
+  <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"> </script>
   <script src="{{ url_for('static', filename='/scripts/booking.js') }}" type="module"></script>
 </html>
