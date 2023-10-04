@@ -1,4 +1,4 @@
-import { checkSign } from './utility.js'
+import { checkSign, inputIsEmpty } from './utility.js'
 const bookingsContainer = document.querySelector("#bookings .container")
 const bookingsStatus = document.querySelector("#bookings .container .status")
 const title = document.querySelector("#bookings .container .title")
@@ -10,7 +10,7 @@ const submit = document.querySelector(".submit .button")
 const APP_ID = 137131
 const APP_KEY = "app_onbClmcZKvEFRCATMGonfO2tuvoiwkp3StYnwRCX62dzLWZXGMNecPuyaJxK"
 let isbookingEmpty = true
-const orders = []
+let order = {}
 const fields = {
   number: {
       // css selector
@@ -78,7 +78,7 @@ async function init() {
     
     getBookings()
       .then( bookings => {
-        makeOrders(bookings)
+        makeOrder(bookings)
         render(bookings)
           .then( result => {
             if(result == "nothing"){
@@ -208,6 +208,8 @@ function getBookings(){
 
 function render(datas){
   let promise = new Promise((resolve, reject) => {
+
+    console.log(datas)
     
     if(datas.data === null){
       bookingsStatus.classList.add("active")
@@ -237,45 +239,48 @@ function render(datas){
   return promise
 }
 
-function makeOrders(datas){
-
+function makeOrder(datas){
+  if(datas.data === null) return
+  
+  let totalPrice = 0
+  let trips = []
   for(let data of datas){
     let { attraction, date, price, time } = data.data
-    let order = {
-      trip: { attraction },
-      price,
-      date,
-      time,
-    }
-  orders.push(order)
+    totalPrice += price
+    trips.push({ attraction, date, time })
   }
 
-  console.log(orders);
+  order = { price: totalPrice, trips}
 }
 
 function onSubmit(){
   let contact = {}
   let isOK = confirm("確定要付款了嗎？")
-  
+
   const tappayStatus = TPDirect.card.getTappayFieldsStatus()
   if (tappayStatus.canGetPrime === false) {
-      alert('can not get prime')
+      alert('付款訊息輸入可能有誤，請重新輸入')
       return
   }
   if(!isOK) return
-  
+  for(let [key, value] of new FormData(contactForm).entries()){
+    if(inputIsEmpty(value)){
+      alert("聯絡資訊輸入有誤")
+      return
+    }
+    contact[key] = value
+  }
 
   TPDirect.card.getPrime( result => {
     if (result.status !== 0) {
-        alert('get prime error ')
-        return
+      alert('無法取得結帳授權，請重新輸入或稍後再試')
+      return
     }
     
     let prime = result.card.prime
-    for(let [key, value] of new FormData(contactForm).entries()){
-      contact[key] = value
-    }
-    let reqBody = { prime, order: orders, contact }
+    order.contact = contact
+    let reqBody = { prime, order }
+    console.log(reqBody);
     fetch("/api/order", {
       method: "POST",
       headers: {

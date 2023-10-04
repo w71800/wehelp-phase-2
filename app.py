@@ -3,6 +3,9 @@ import jwt
 import datetime
 from contextlib import contextmanager
 from flask import *
+import requests
+import response
+import asyncio
 
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
@@ -65,7 +68,6 @@ def get_token():
 	
 	return token
 
-
 def check_auth(token, key="secret"):
 	if not token or token == "undefined":
 		return False
@@ -73,6 +75,30 @@ def check_auth(token, key="secret"):
 		user = jwt.decode(token, key, algorithms=["HS256"])["data"]
 		return user
 
+def connectToTP(order):
+	prime = order["prime"]
+	order = order["order"]
+	contact = order["contact"]
+	TP_url = "https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
+	data = {
+		"prime": prime,
+		"partner_key": "partner_rD3NG5KHlV7RbYLzLbKuEQjLhcrVXxcL0lJCfYRDLtQzvH1FNba3j6gg",
+		"merchant_id": "w71800_CTBC",
+		"details":"台北一日遊",
+		"amount": order["price"],
+		"cardholder": {
+				"phone_number": contact["phone"],
+				"name": contact["name"],
+				"email": contact["email"]
+  	}
+	}
+	headers = {
+		"Content-Type": "application/json",
+		"x-api-key": "partner_rD3NG5KHlV7RbYLzLbKuEQjLhcrVXxcL0lJCfYRDLtQzvH1FNba3j6gg"
+	}
+	response = requests.post(TP_url, data = json.dumps(data), headers = headers)
+	
+	return response
 # Pages
 @app.route("/")
 def index():
@@ -432,6 +458,7 @@ def api_booking():
 
 @app.route("/api/order", methods=["POST"])
 def api_order():
+	number = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
 	is_auth = check_auth(get_token())
 	if not is_auth:
 		response = {
@@ -442,7 +469,101 @@ def api_order():
 	else:
 		user_id = is_auth["id"]
 
-	order = request.get_json()
-	return make_response(jsonify({"hello": True}), 200)
+	orderData = request.get_json()
+	order = orderData["order"]
+	contact = order["contact"]
+
+	# 將訂單放到資料庫中
+	with connectToDB() as (db, cursor):
+		try:
+			sql = """
+						INSERT into orders(number, price, member_id, trips, contact, payment)
+						VALUES(%s, %s, %s, %s, %s, %s)
+						"""
+			values = (number, order["price"], user_id, json.dumps(order["trips"]),  json.dumps(contact), 1, )
+			cursor.execute(sql, values)
+
+			db.commit()
+
+		except connector.Error as e:
+			db.rollback()
+			response = { "error": True, "message": str(e) }
+			return make_response(jsonify(response), 400)
+		
+	# 開始對 TP Server 做付款請求
+	TPresponse = connectToTP(orderData)
+	content_json = TPresponse.json()
+	if content_json["status"] == 0:
+		with connectToDB() as (db, cursor):
+			try:
+				sql = """
+							UPDATE orders SET payment = 0 WHERE number = (%s);
+							"""
+				cursor.execute(sql, (number, ))
+				db.commit()
+
+			except connector.Error as e:
+				db.rollback()
+				response = { "error": True, "message": str(e) }
+				return make_response(jsonify(response), 500)
+		
+		with connectToDB() as (db, cursor):
+			try:
+				sql = """
+							DELETE from bookings WHERE member_id = (%s);
+							"""
+				cursor.execute(sql, (user_id, ))
+				db.commit()
+			
+				data = { 
+					"number": number, 
+					"payment": {
+						"status": 0,
+						"message": "付款成功"
+					}
+				}
+				response = { "data": data }
+				return make_response(jsonify(response), 200)
+
+			except connector.Error as e:
+				db.rollback()
+				response = { "error": True, "message": str(e) }
+				return make_response(jsonify(response), 500)
+
+@app.route("/api/order/<number>")
+def api_orderNumber(number):
+	data = None
+	is_auth = check_auth(get_token())
+	if not is_auth:
+		response = {
+  			"error": True,
+  			"message": "Not signin."
+			}
+		return make_response(jsonify(response), 403)
+	else:
+		user_id = is_auth["id"]
+	with connectToDB() as (db, cursor):
+		try:
+			sql = """
+						SELECT number, price, trips, contact, payment from orders WHERE number = (%s)
+						"""
+			cursor.execute(sql, (number, ))
+			number, price, trips, contact, payment = cursor.fetchall()[0]
+
+			data = {
+				"number": number,
+				"price": price,
+				"trips": json.loads(trips),
+				"contact": json.loads(contact),
+				"status": payment
+			}
+			response = { "data": data }
+			return make_response(jsonify(response), 200)
+		
+		except connector.Error as e:
+			response = { "error": True, "message": str(e) } 
+			return make_response(jsonify(response), 500)
+	
+
 
 app.run(host="0.0.0.0", port=3000, debug=True)
