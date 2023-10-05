@@ -5,7 +5,6 @@ from contextlib import contextmanager
 from flask import *
 import requests
 import response
-import asyncio
 
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
@@ -112,6 +111,9 @@ def booking():
 @app.route("/thankyou")
 def thankyou():
 	return render_template("thankyou.html")
+@app.route("/dashboard")
+def dashboard():
+	return render_template("dashboard.html")
 
 ##### api 路由 #####
 
@@ -490,10 +492,25 @@ def api_order():
 			response = { "error": True, "message": str(e) }
 			return make_response(jsonify(response), 400)
 		
+	# 移除掉 bookings 內的內容
+	with connectToDB() as (db, cursor):
+		try:
+			sql = """
+						DELETE from bookings WHERE member_id = (%s);
+						"""
+			cursor.execute(sql, (user_id, ))
+			db.commit()
+
+		except connector.Error as e:
+			db.rollback()
+			response = { "error": True, "message": str(e) }
+			return make_response(jsonify(response), 500)
+	
 	# 開始對 TP Server 做付款請求
 	TPresponse = connectToTP(orderData)
 	content_json = TPresponse.json()
 	if content_json["status"] == 0:
+		# 更新 order 的付款狀況
 		with connectToDB() as (db, cursor):
 			try:
 				sql = """
@@ -502,26 +519,13 @@ def api_order():
 				cursor.execute(sql, (number, ))
 				db.commit()
 
-			except connector.Error as e:
-				db.rollback()
-				response = { "error": True, "message": str(e) }
-				return make_response(jsonify(response), 500)
-		
-		with connectToDB() as (db, cursor):
-			try:
-				sql = """
-							DELETE from bookings WHERE member_id = (%s);
-							"""
-				cursor.execute(sql, (user_id, ))
-				db.commit()
-			
 				data = { 
-					"number": number, 
-					"payment": {
-						"status": 0,
-						"message": "付款成功"
-					}
+				"number": number, 
+				"payment": {
+					"status": 0,
+					"message": "付款成功"
 				}
+			}
 				response = { "data": data }
 				return make_response(jsonify(response), 200)
 
@@ -529,6 +533,17 @@ def api_order():
 				db.rollback()
 				response = { "error": True, "message": str(e) }
 				return make_response(jsonify(response), 500)
+		
+	else:
+		data = {
+			"number": number,
+			"payment": {
+				"status": content_json["status"],
+				"message": content_json["msg"]
+			}
+		}
+		response = { "data": data }
+		return make_response(jsonify(response), 200)
 
 @app.route("/api/order/<number>")
 def api_orderNumber(number):

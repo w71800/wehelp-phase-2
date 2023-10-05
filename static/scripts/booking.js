@@ -291,7 +291,8 @@ function onSubmit(){
     })
     .then( res => res.json() )
     .then( res => {
-      console.log(res);
+      let { data } = res
+      window.location.href = `/thankyou?number=${ data.number }`
     })
   })
 }

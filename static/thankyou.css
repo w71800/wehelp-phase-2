@@ -290,159 +290,39 @@ html, body {
   height: 64px;
 }
 
-#page-booking {
-  height: 100%;
-}
-#page-booking #navbar {
-  border-bottom: 1px solid #E8E8E8;
-}
-#page-booking .psuedo {
-  margin-bottom: 40px;
-}
-#page-booking #footer.fill {
-  align-items: flex-start;
+* {
+  text-align: center;
 }
 
-#bookings {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-#bookings .container {
-  padding: 0px 110px;
-  border-bottom: 1px solid #E8E8E8;
-  padding-bottom: 40px;
-}
-#bookings .container.inactive {
-  border-bottom: none;
-}
-#bookings .title {
-  margin-bottom: 20px;
-  font-weight: 700;
-  font-size: 19px;
-  color: #757575;
-  left: -10px;
-}
-#bookings .booking {
-  display: flex;
-  margin-bottom: 20px;
-}
-#bookings .booking img.attraction {
-  width: 250px;
-  object-fit: cover;
-}
-#bookings .booking .info {
-  padding-left: 30px;
-}
-#bookings .booking .info > * {
-  margin-bottom: 20px;
-}
-#bookings .booking .info * {
-  font-weight: 700;
-  font-size: 1rem;
-  color: #757575;
-}
-#bookings .booking .info span {
-  font-weight: 500;
-}
-#bookings .booking .info .info_name {
-  color: #448899;
-  margin-bottom: 25px;
-}
-#bookings .booking .info .info_name span {
-  color: inherit;
-  font-weight: inherit;
-}
-#bookings .booking .delete {
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  cursor: pointer;
-}
-#bookings .booking .delete img {
-  width: 100%;
+#page-thankyou {
   height: 100%;
 }
-
-#info .container {
-  padding: 0px 110px;
-  margin: 0 auto;
-  border-bottom: 1px solid #E8E8E8;
-  margin-bottom: 40px;
-  padding-bottom: 40px;
-}
-#info .container * {
-  color: #757575;
-}
-#info .title {
-  font-weight: 700;
-  font-size: 19px;
-  margin-bottom: 15px;
-}
-#info .wrapper {
-  margin-bottom: 15px;
-}
-#info .wrapper input {
-  width: 200px;
-  height: 38px;
-  border: 1px solid #E8E8E8;
-  padding: 10px;
-  border-radius: 5px;
-  color: #757575;
-  font-size: 1rem;
-}
-#info .hint {
-  font-weight: 700;
-}
-#info .submit {
+#page-thankyou #footer {
   position: absolute;
-  right: 110px;
   bottom: 0;
 }
-#info .button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #448899;
-  width: 173px;
-  height: 36px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  color: white;
-  font-weight: 400;
-  cursor: pointer;
-}
-#info .total {
+
+.title, .number, .redirect {
   margin-bottom: 20px;
-  text-align: right;
+}
+
+.title {
+  padding-top: 30px;
+  color: #448899;
+  font-size: 2rem;
   font-weight: 700;
 }
-#info .container:last-child {
-  height: 100px;
-  border: none;
-}
-#info.inactive {
-  display: none;
-}
 
-.status {
+.number {
   color: #757575;
-  left: -10px;
-  display: none;
 }
-.status.active {
-  display: block;
+.number span {
+  font-weight: 700;
 }
 
-.wrapper .tpfield, .wrapper label {
-  vertical-align: middle;
-  display: inline-block;
+.redirect {
+  color: #757575;
 }
-.wrapper iframe {
-  border: 1px solid #E8E8E8 !important;
-  border-radius: 6px !important;
-  padding: 0px 15px !important;
-  height: 40px !important;
+.redirect a {
+  text-decoration: none;
 }
