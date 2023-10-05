@@ -1,11 +1,73 @@
-import { checkSign } from './utility.js'
+import { checkSign, inputIsEmpty } from './utility.js'
 const bookingsContainer = document.querySelector("#bookings .container")
 const bookingsStatus = document.querySelector("#bookings .container .status")
 const title = document.querySelector("#bookings .container .title")
 const bookingInfo = document.querySelector("#page-booking #info")
 const totalPrice = document.querySelector("#info .container .total")
 const bookingFooter = document.querySelector("#page-booking #footer")
+const contactForm = document.querySelector("form.contact")
+const submit = document.querySelector(".submit .button")
+const APP_ID = 137131
+const APP_KEY = "app_onbClmcZKvEFRCATMGonfO2tuvoiwkp3StYnwRCX62dzLWZXGMNecPuyaJxK"
 let isbookingEmpty = true
+let order = {}
+const fields = {
+  number: {
+      // css selector
+      element: '#card-number',
+      placeholder: '**** **** **** ****'
+  },
+  expirationDate: {
+      // DOM object
+      element: document.getElementById('card-expiration-date'),
+      placeholder: 'MM / YY'
+  },
+  ccv: {
+      element: '#card-ccv',
+      placeholder: 'ccv'
+  }
+}
+const styles = {
+  // Style all elements
+  'input': {
+      'color': 'gray'
+  },
+  // Styling ccv field
+  'input.ccv': {
+      // 'font-size': '16px'
+  },
+  // Styling expiration-date field
+  'input.expiration-date': {
+      // 'font-size': '16px'
+  },
+  // Styling card-number field
+  'input.card-number': {
+      // 'font-size': '16px'
+  },
+  // style focus state
+  ':focus': {
+      // 'color': 'black'
+  },
+  // style valid state
+  '.valid': {
+      'color': 'green'
+  },
+  // style invalid state
+  '.invalid': {
+      'color': 'red'
+  },
+  // Media queries
+  // Note that these apply to the iframe, not the root window.
+  '@media screen and (max-width: 400px)': {
+      'input': {
+          'color': 'orange'
+      }
+  }
+}
+
+TPDirect.setupSDK(APP_ID, APP_KEY, 'sandbox')
+TPDirect.card.setup({ fields, styles })
+submit.addEventListener("click", onSubmit)
 
 async function init() {
   let isSign = await checkSign()
@@ -16,6 +78,7 @@ async function init() {
     
     getBookings()
       .then( bookings => {
+        makeOrder(bookings)
         render(bookings)
           .then( result => {
             if(result == "nothing"){
@@ -145,6 +208,8 @@ function getBookings(){
 
 function render(datas){
   let promise = new Promise((resolve, reject) => {
+
+    console.log(datas)
     
     if(datas.data === null){
       bookingsStatus.classList.add("active")
@@ -158,7 +223,6 @@ function render(datas){
     }
   
     for(let booking of datas){
-      console.log(booking.data);
       bookingsContainer.append(makeBooking(booking.data))
     }
   
@@ -173,6 +237,64 @@ function render(datas){
   })
   
   return promise
+}
+
+function makeOrder(datas){
+  if(datas.data === null) return
+  
+  let totalPrice = 0
+  let trips = []
+  for(let data of datas){
+    let { attraction, date, price, time } = data.data
+    totalPrice += price
+    trips.push({ attraction, date, time })
+  }
+
+  order = { price: totalPrice, trips}
+}
+
+function onSubmit(){
+  let contact = {}
+  let isOK = confirm("確定要付款了嗎？")
+
+  const tappayStatus = TPDirect.card.getTappayFieldsStatus()
+  if (tappayStatus.canGetPrime === false) {
+      alert('付款訊息輸入可能有誤，請重新輸入')
+      return
+  }
+  if(!isOK) return
+  for(let [key, value] of new FormData(contactForm).entries()){
+    if(inputIsEmpty(value)){
+      alert("聯絡資訊輸入有誤")
+      return
+    }
+    contact[key] = value
+  }
+
+  TPDirect.card.getPrime( result => {
+    if (result.status !== 0) {
+      alert('無法取得結帳授權，請重新輸入或稍後再試')
+      return
+    }
+    
+    let prime = result.card.prime
+    order.contact = contact
+    let reqBody = { prime, order }
+    console.log(reqBody);
+    fetch("/api/order", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(reqBody)
+    })
+    .then( res => res.json() )
+    .then( res => {
+      let { data } = res
+      window.location.href = `/thankyou?number=${ data.number }`
+    })
+  })
 }
 
 

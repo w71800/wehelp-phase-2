@@ -20,4 +20,8 @@ function showSign(){
   },100)
 }
 
-export { checkSign, showSign }
+function inputIsEmpty(str){
+  return str.trim() === '' ? true : false
+}
+
+export { checkSign, showSign, inputIsEmpty }

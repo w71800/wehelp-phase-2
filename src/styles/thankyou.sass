@@ -1,0 +1,31 @@
+@use './utility/_vars'
+@use './utility/rwd'
+@use './utility/component'
+@use './utility/reset'
+
+*
+  // border: 1px solid #000
+  text-align: center
+#page-thankyou
+  height: 100%
+  #footer
+    position: absolute
+    bottom: 0
+.title, .number, .redirect
+  margin-bottom: 20px
+
+.title
+  padding-top: 30px
+  color: vars.$color_primary
+  font-size: 2rem
+  font-weight: 700
+
+.number
+  color: vars.$color_secondary
+  span
+    font-weight: 700
+
+.redirect
+  color: vars.$color_secondary
+  a
+    text-decoration: none

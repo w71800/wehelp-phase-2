@@ -20,26 +20,26 @@ html(lang="en")
           form.contact
             .wrapper
               label(for="") 聯絡姓名：
-              input
+              input(name="name" value="嗙" required)
             .wrapper
               label(for="") 連絡信箱：
-              input
+              input(name="email" value="test@admin" required)
             .wrapper
               label(for="") 手機號碼：
-              input
+              input(name="phone" value="0900000000" required)
             .hint 請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。
         .container
           .title 信用卡付款資訊
-          form.pay
-            .wrapper
-              label(for="") 卡片號碼：
-              input(type="password")
-            .wrapper
-              label(for="") 過期時間：
-              input(placeholder="MM/YY")
-            .wrapper
-              label(for="") 驗證密碼：
-              input(placeholder="CVV" maxlength=3)
+          //- form.pay
+          .wrapper
+            label 信用卡號：
+            .tpfield#card-number
+          .wrapper
+            label 卡片效期：
+            .tpfield#card-expiration-date
+          .wrapper
+            label 驗證號碼：
+            .tpfield#card-ccv
         .container
           .submit
             .total 總價：新台幣 0 元
@@ -47,6 +47,9 @@ html(lang="en")
 
 
       include ./components/footer.pug
+  script(src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0") 
   script(src="{{ url_for('static', filename='/scripts/booking.js') }}" type="module")
+
+
 
     
