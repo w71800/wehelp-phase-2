@@ -1,58 +1,18 @@
+import { loadingControl } from './utility.js'
+
 const scrollBtns = document.querySelectorAll(".scroll_btn")
 const scroller = document.querySelector(".scroll_scroller")
 const scrollContainer = document.querySelector(".scroll_container")
 const content = document.querySelector(".content")
 const searchBtn = document.querySelector(".header_icon")
 const showStatus = document.querySelector(".status")
+// const nowLoading = document.querySelector("#loading")
 let directionCounter = {}
 let queryStatus = {
   nextPage: 0,
   keyword: null,
   isQuerying: false
 }
-
-scrollBtns.forEach( btn => {
-  let direction = btn.dataset.direction
-  btn.addEventListener("click", function(){
-    scrolling(direction, this)
-  })
-  directionCounter[direction] = 0
-})
-searchBtn.addEventListener("click", function(){
-  let input = document.querySelector(".header_bar input")
-  queryStatus.keyword = input.value
-  queryStatus.nextPage = 0
-  clearOut()
-  renderStatus()
-
-  getData()
-})
-window.addEventListener("keyup", function(e){
-  if(e.code == "Enter"){
-    let input = document.querySelector(".header_bar input")
-    queryStatus.keyword = input.value
-    queryStatus.nextPage = 0
-    clearOut()
-    renderStatus()
-  
-    getData()
-  }
-})
-window.addEventListener("scroll", ()=>{
-  let scrollTop = document.documentElement.scrollTop;
-  let totalHeight = document.documentElement.scrollHeight;
-  let windowHeight = window.innerHeight;
-
-  
-  if (scrollTop + windowHeight >= totalHeight && content.children.length != 0 && queryStatus.isQuerying == false) {
-    if(queryStatus.nextPage == null){
-      renderStatus("沒有其他資料了")
-      return
-    }
-    renderStatus("搜尋中...")
-    debounceGetData()
-  }
-})
 
 
 function scrolling(direction, el){
@@ -127,7 +87,7 @@ function makeBlock(obj) {
 
   return block;
 }
-function getData(){
+function getAttractions(){
   let { nextPage: page, keyword, isQuerying } = queryStatus
   
   if(page == null) return
@@ -138,47 +98,33 @@ function getData(){
   }
 
   queryStatus.isQuerying = true
-  fetch(`api/attractions?${queryStr}`)
-  .then( res => {
-    let { status } = res
-    return res.json()
-    .then( data => {
-      const responseData = {
-        status: status,
-        ...data
-      };
-      return responseData;
-    })
-  } )
-  .then( res => {
-    if(res.error) {
-      console.log("not OK");
-    }else{
-      let { data, nextPage } = res
+
+  return fetch(`api/attractions?${queryStr}`)
+    .then( res => {
+      let { status } = res
       
-      for(let item of data){
-        let block = makeBlock(item)
-        content.appendChild(block)
-      }
-
-      queryStatus.nextPage = nextPage
-      console.log(queryStatus);
-    }
-    return res
+      return res.json()
+        .then( data => {
+          return { status, ...data }
+        })
   })
-  .then( res => {
-    if(res.status == 500){
-      renderStatus(res.message)
-    }
-    else{
-      renderStatus()
-    }
-    queryStatus.isQuerying = false
-  })
-  .catch( e => {
-    console.log(e);
+  
+}
+function getData(){
+  let promise = new Promise((resolve, reject) => {
+    getAttractions()
+      .then( res => {
+        renderBlock(res)
+        queryStatus.isQuerying = false
+        resolve("getAttracion done")
+      })
+      .catch( e => {
+        console.log(e);
+      })
   })
 
+  return promise
+  
 }
 function clearOut(){
   while(content.firstChild){
@@ -191,6 +137,26 @@ function stringQueryer(str){
   clearOut()
 
   getData()
+}
+function renderBlock(resObj){
+  let promise = new Promise((resolve, reject) => {
+    if(resObj.error){
+      renderStatus(res.message)
+      reject(false)
+    }
+    
+    let { data, nextPage } = resObj
+    
+    for(let item of data){
+      let block = makeBlock(item)
+      content.appendChild(block)
+    }
+    queryStatus.nextPage = nextPage
+
+    resolve("render done")
+  })
+
+  return promise
 }
 function renderStatus(statusStr){
   /**
@@ -208,27 +174,78 @@ function renderStatus(statusStr){
 
 }
 function init(){
-  fetch("api/mrts")
-  .then( res => res.json() )
-  .then( res => {
-    let { data } = res
-
-    for(let item of data){
-      let elMrt = document.createElement("div")
-      elMrt.classList.add("mrt")
-      elMrt.textContent = item
-      elMrt.addEventListener("click", function(){
-        let input = document.querySelector(".header_bar input")
-        renderStatus()
-        input.value = this.textContent
-
-        stringQueryer(this.textContent)
-      })
-
-      scroller.append(elMrt)
-    }  
+  scrollBtns.forEach( btn => {
+    let direction = btn.dataset.direction
+    btn.addEventListener("click", function(){
+      scrolling(direction, this)
+    })
+    directionCounter[direction] = 0
   })
-  getData()
+  searchBtn.addEventListener("click", function(){
+    let input = document.querySelector(".header_bar input")
+    queryStatus.keyword = input.value
+    queryStatus.nextPage = 0
+    clearOut()
+    renderStatus()
+  
+    getData()
+  })
+  window.addEventListener("keyup", function(e){
+    if(e.code == "Enter"){
+      let input = document.querySelector(".header_bar input")
+      queryStatus.keyword = input.value
+      queryStatus.nextPage = 0
+      clearOut()
+      renderStatus()
+    
+      getData()
+    }
+  })
+  window.addEventListener("scroll", () => {
+    let scrollTop = document.documentElement.scrollTop;
+    let totalHeight = document.documentElement.scrollHeight;
+    let windowHeight = window.innerHeight;
+  
+    
+    if (scrollTop + windowHeight >= totalHeight && content.children.length != 0 && queryStatus.isQuerying == false) {
+      if(queryStatus.nextPage == null){
+        renderStatus("沒有其他資料了")
+        return
+      }
+      renderStatus("搜尋中...")
+      debounceGetData()
+    }
+  })
+  let promise1 = fetch("api/mrts")
+    .then( res => res.json() )
+    .then( res => {
+      let { data } = res
+
+      for(let item of data){
+        let elMrt = document.createElement("div")
+        elMrt.classList.add("mrt")
+        elMrt.textContent = item
+        elMrt.addEventListener("click", function(){
+          let input = document.querySelector(".header_bar input")
+          renderStatus()
+          input.value = this.textContent
+
+          stringQueryer(this.textContent)
+        })
+
+        scroller.append(elMrt)
+      } 
+      return "get MRT Done"
+  })
+  let promise2 = getData()
+
+  Promise.all([promise1, promise2])
+    .then( () => { 
+      loadingControl()
+    })
+    .catch( e =>{
+      console.log(e);
+    })
 
 }
 // 生成有防抖保護的 function

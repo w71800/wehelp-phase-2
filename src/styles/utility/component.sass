@@ -149,5 +149,42 @@
     transition-timing-function: cubic-bezier(0.855, 0.235, 0.385, 1.650)
     transform: translate(-50%, 0%)
   
+#loading
+  @keyframes bounce 
+    0%
+      transform: translateY(0)
+
+    50% 
+      transform: translateY(-10px)
+
+    100% 
+    transform: translateY(0)
+
+  position: absolute
+  top: 0
+  display: none
+  align-items: center
+  justify-content: center
+  width: 100vw
+  height: 100vh
+  color: #448899
+  background-color: white
+  font-size: 2rem
+  font-weight: 700
+  z-index: 999
+  transition: 0.8s
+  
+    
+  &.bounce
+    $total-spans: 14
+    @for $i from 1 through $total-spans 
+      $delay: $i * 0.2s
+      span
+        &:nth-child(#{$i})
+          animation: bounce 0.2s cubic-bezier(.05,.69,.99,.42) $delay
+  &.active
+    display: flex
+  
+
   
     

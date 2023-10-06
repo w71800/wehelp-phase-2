@@ -1,3 +1,5 @@
+const nowLoading = document.querySelector("#loading")
+
 function checkSign(){
   return fetch("/api/auth", {
     headers: {
@@ -24,4 +26,14 @@ function inputIsEmpty(str){
   return str.trim() === '' ? true : false
 }
 
-export { checkSign, showSign, inputIsEmpty }
+function loadingControl(){
+  setTimeout(() => {
+    nowLoading.style.opacity = 0
+    nowLoading.addEventListener("transitionend", function(){
+      this.classList.remove("active")
+      document.querySelector("body").classList.remove("disable-scroll")
+    })
+  }, 1000)
+}
+
+export { checkSign, showSign, inputIsEmpty, loadingControl }
