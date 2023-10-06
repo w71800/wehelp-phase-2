@@ -1,4 +1,4 @@
-import { checkSign, inputIsEmpty } from './utility.js'
+import { checkSign, inputIsEmpty, loadingControl } from './utility.js'
 const bookingsContainer = document.querySelector("#bookings .container")
 const bookingsStatus = document.querySelector("#bookings .container .status")
 const title = document.querySelector("#bookings .container .title")
@@ -81,6 +81,8 @@ async function init() {
         makeOrder(bookings)
         render(bookings)
           .then( result => {
+            loadingControl()
+            
             if(result == "nothing"){
               let elementRect = bookingFooter.getBoundingClientRect() 
               let distanceToBottom = window.innerHeight - elementRect.top

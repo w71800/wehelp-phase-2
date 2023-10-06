@@ -1,4 +1,4 @@
-import { showSign, checkSign } from "./utility.js";
+import { showSign, checkSign, loadingControl } from "./utility.js";
 
 const url = window.location.href;
 const id = url.match(/attraction\/(\d+)/)[1]
@@ -115,9 +115,13 @@ function render(data){
 
 }
 
-async function init(){
-  let data = await getData()
-  render(data)
+function init(){
+  getData()
+    .then( data => {
+      render(data)
+      loadingControl()
+    })
+  
   document.querySelector("input[name='attractionId']").value = window.location.href.match(/\/(\d+)$/)[1]
 }
 

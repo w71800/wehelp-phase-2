@@ -6,7 +6,7 @@
     <title>景點資料</title>
     <link rel="stylesheet" href="{{url_for('static', filename='attraction.css')}}">
   </head>
-  <body> 
+  <body class="disable-scroll">
     <div id="page-attraction">
       <div class="psuedo">
         <div id="navbar">
@@ -21,6 +21,8 @@
         </div>
       </div>
       <script src="{{ url_for('static', filename='/scripts/nav.js') }}" type="module"></script>
+      <div class="bounce active" id="loading"><span>n</span><span>o</span><span>w </span><span>&nbsp;</span><span>l</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span><span>.</span><span>.</span><span>.</span></div>
+      <script src="{{ url_for('static', filename='/scripts/booking.js') }}" type="module"></script>
       <div class="filter"></div>
       <div class="box_container">
         <div class="signin" id="box">
@@ -105,7 +107,7 @@
         </div>
       </div>
       <div id="footer">
-        <div class="footer_content">COPYRIGHT © 2021 台北一日遊</div>
+        <div class="footer_content">COPYRIGHT © 2023 台北一日遊</div>
       </div>
     </div>
   </body>

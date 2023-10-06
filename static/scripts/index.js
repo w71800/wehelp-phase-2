@@ -6,7 +6,6 @@ const scrollContainer = document.querySelector(".scroll_container")
 const content = document.querySelector(".content")
 const searchBtn = document.querySelector(".header_icon")
 const showStatus = document.querySelector(".status")
-// const nowLoading = document.querySelector("#loading")
 let directionCounter = {}
 let queryStatus = {
   nextPage: 0,
