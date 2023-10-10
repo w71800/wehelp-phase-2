@@ -5,7 +5,7 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title 訂單頁面
     link(rel="stylesheet", href="{{url_for('static', filename='booking.css')}}")
-  body 
+  body.disable-scroll
     #page-booking
       include ./components/nav.pug
       include ./components/nowLoading.pug
@@ -46,8 +46,8 @@ html(lang="en")
             .total 總價：新台幣 0 元
             .button 確認訂購並付款
 
-
       include ./components/footer.pug
+
   script(src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0") 
   script(src="{{ url_for('static', filename='/scripts/booking.js') }}" type="module")
 

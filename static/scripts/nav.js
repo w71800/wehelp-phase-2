@@ -1,6 +1,6 @@
 import { checkSign } from './utility.js'
 
-function factoryNav(){
+const initNav = (function (){
   const signout = document.querySelector(".signout")
   const sign = document.querySelector(".sign")
   const book = document.querySelector(".navbar_option.booking")
@@ -51,7 +51,5 @@ function factoryNav(){
       }
     })
   }
-}
-
-let initNav = factoryNav()
+})();
 initNav()

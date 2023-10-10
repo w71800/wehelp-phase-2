@@ -434,6 +434,7 @@ body.disable-scroll {
   background-color: white;
   opacity: 0.8;
   transition: 0.3s;
+  cursor: pointer;
 }
 #main .area * {
   color: #666;

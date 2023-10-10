@@ -1,13 +1,21 @@
-const loading = document.querySelector("#loading")
-const lastSpan = document.querySelectorAll("span")[13]
+const initNowLoading = (function(){
+  let loading = document.querySelector("#loading")
+  let lastSpan = document.querySelectorAll("span")[13]
 
-console.log(lastSpan)
+  return function(){
+    lastSpan.addEventListener("animationend", ()=>{
+      console.log("end")
+      loading.classList.remove("bounce")
+      setTimeout(()=>{
+        loading.classList.add("bounce")  
+      }, 200)
+    })
+  }
+})();
 
-lastSpan.addEventListener("animationend", ()=>{
-  console.log("end")
-  loading.classList.remove("bounce")
-  setTimeout(()=>{
-    loading.classList.add("bounce")  
-  }, 200)
-})
+initNowLoading()
+
+
+
+
 

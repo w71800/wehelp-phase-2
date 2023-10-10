@@ -71,7 +71,6 @@ submit.addEventListener("click", onSubmit)
 
 async function init() {
   let isSign = await checkSign()
-  console.log(isSign);
 
   if(isSign){
     title.textContent = `您好，${isSign.name}，待預訂的行程如下：`

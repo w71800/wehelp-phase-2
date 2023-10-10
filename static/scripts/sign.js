@@ -1,4 +1,4 @@
-function factorySign(){
+const initSign = (function (){
   const signinForm = document.querySelector("#box.signin form")
   const signupForm = document.querySelector("#box.signup form")
   const changeSpan = document.querySelectorAll("span")
@@ -119,9 +119,8 @@ function factorySign(){
     
     })
   }
-}
+})();
 
-let initSign = factorySign()
 initSign()
 
 
