@@ -1,12 +1,16 @@
 from contextlib import contextmanager
 import json
 import requests
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 import mysql.connector as connector
 dbconfig = {
 	"host": "localhost",
 	"user": "root",
-	"password": "0000",
+	"password": os.environ.get("DB_PASSWORD"),
 	"database": "wehelp",
 	"pool_name": "pool",
 	"pool_size": 5
@@ -37,7 +41,7 @@ def connectToTP(order):
 	TP_url = "https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
 	data = {
 		"prime": prime,
-		"partner_key": "partner_rD3NG5KHlV7RbYLzLbKuEQjLhcrVXxcL0lJCfYRDLtQzvH1FNba3j6gg",
+		"partner_key": os.environ.get("TP_PARTNER_KEY"),
 		"merchant_id": "w71800_CTBC",
 		"details":"台北一日遊",
 		"amount": order["price"],

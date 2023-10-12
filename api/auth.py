@@ -1,6 +1,4 @@
-from utils.utils import reform_attraction, get_token, check_auth
-from models import connectToDB, connector, connectToTP
-from flask import Blueprint, request, make_response, jsonify
+from api import *
 import jwt
 import datetime
 
@@ -13,18 +11,13 @@ def api_auth():
 	if(method == "GET"):
 		token = get_token()
 		
-		if not token:
-			response = { "data": None }
-			return make_response(jsonify(response), 200)
-		
 		try:
-			result = jwt.decode(token, key, algorithms=["HS256"])
-			data = result.get("data")
-			response = { "data": data }
+			user_data = check_auth(token)
+			response = { "data": user_data }
 		
-		except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+		except (jwt.ExpiredSignatureError, jwt.InvalidTokenError) as e:
 			response = { "data": None }
-
+			print(e)
 		return make_response(jsonify(response), 200)
 
 

@@ -9,15 +9,20 @@ from api.booking import booking_blueprint
 from api.order import order_blueprint
 from api.order_number import order_number_blueprint
 
+blueprints = [
+	attractions_blueprint,
+	attractions_id_blueprint,
+	mrts_blueprint,
+	user_blueprint,
+	auth_blueprint,
+	booking_blueprint,
+	order_blueprint,
+	order_number_blueprint,
+]
 app = Flask(__name__)
-app.register_blueprint(attractions_blueprint)
-app.register_blueprint(attractions_id_blueprint)
-app.register_blueprint(mrts_blueprint)
-app.register_blueprint(user_blueprint)
-app.register_blueprint(auth_blueprint)
-app.register_blueprint(booking_blueprint)
-app.register_blueprint(order_blueprint)
-app.register_blueprint(order_number_blueprint)
+
+for blueprint in blueprints:
+	app.register_blueprint(blueprint)
 
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True

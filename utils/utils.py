@@ -23,7 +23,7 @@ def reform_attraction(raw):
 def get_token():
 	auth_header = request.headers.get("Authorization")
 
-	# print(auth_header)
+	print(auth_header)
 	if not auth_header or auth_header == "undefined":
 		token = None
 	else:
@@ -33,7 +33,7 @@ def get_token():
 
 def check_auth(token, key="secret"):
 	if not token or token == "undefined":
-		return False
+		return None
 	else:
 		user = jwt.decode(token, key, algorithms=["HS256"])["data"]
 		return user
