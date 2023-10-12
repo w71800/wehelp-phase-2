@@ -74,6 +74,8 @@ async function init() {
 
   if(isSign){
     title.textContent = `您好，${isSign.name}，待預訂的行程如下：`
+    contactForm.querySelector("[name='name']").value = isSign.name
+    contactForm.querySelector("[name='email']").value = isSign.email
     
     getBookings()
       .then( bookings => {

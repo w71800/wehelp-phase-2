@@ -3,6 +3,7 @@ const initNowLoading = (function(){
   let lastSpan = document.querySelectorAll("span")[13]
 
   return function(){
+    loading.style.transition = "0.4s"
     lastSpan.addEventListener("animationend", ()=>{
       console.log("end")
       loading.classList.remove("bounce")

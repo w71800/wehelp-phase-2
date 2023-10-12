@@ -109,8 +109,10 @@ function init(){
         let now = 0
         let last, max = data.images.length - 1 
         
-        return function(mode = "direction", direction, index){
+        return function(mode, param){
           if(mode == "direction"){
+            let direction = param
+
             if(direction == "next"){
               now += 1
               last = now - 1
@@ -133,6 +135,8 @@ function init(){
             }
           }
           if(mode == "index"){
+            let index = param
+
             last = now
             now = index
           }
@@ -160,7 +164,7 @@ function init(){
       })
       Array.from(carouselIndicators).forEach( (indicator, index) => {
         indicator.onclick = () => {
-          setCarousel("index", null, index)
+          setCarousel("index", index)
         }
       })
       
