@@ -83,7 +83,6 @@ function makeTrip(dataObj) {
   return order;
 }
 
-
 async function init(){
   let isSign = await checkSign()
   if(isSign){

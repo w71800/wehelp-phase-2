@@ -8,8 +8,7 @@ const searchBtn = document.querySelector(".header_icon")
 const showStatus = document.querySelector(".status")
 let directionCounter = {}
 let queryStatus = {
-  nextPage: 0,
-  keyword: null,
+  nextPage: null,
   isQuerying: false
 }
 
@@ -88,105 +87,63 @@ function makeBlock(obj) {
   return block;
 }
 
-// const getData = (function(){
-//   let nextPage = 0
-//   let isQuerying = false
-  
-//   return function(keyword){
-//     if(nextPage == null) return
+// 抓取資料
+function getData(page, keyword){
+    if(page == null) return
 
-//     let queryStr = `page=${ page }`
-//     if(keyword){
-//       queryStr += `&keyword=${keyword}`
-//     }
-
-//     isQuerying = true
+    let queryStr = keyword ? `page=${ page }&keyword=${keyword}` : `page=${ page }`
+    let url = "api/attractions?" + queryStr
     
-//     return fetch(`api/attractions?${queryStr}`)
-//       .then( res => {
-//         let { status } = res
-        
-//         return res.json()
-//           .then( data => {
-//             return { status, ...data }
-//           })
-//       })
-//   }
-// })();
-
-// 抓取景點資料
-function getAttractions(){
-  let { nextPage: page, keyword, isQuerying } = queryStatus
-  
-  if(page == null) return
-  
-  let queryStr = `page=${ page }`
-  if(keyword){
-    queryStr += `&keyword=${keyword}`
+    return fetch(url)
+      .then( res => {
+        let { status } = res
+        return res.json()
+          .then( data => {
+            return { status, ...data }
+          })
+      })
   }
 
-  queryStatus.isQuerying = true
-
-  return fetch(`api/attractions?${queryStr}`)
-    .then( res => {
-      let { status } = res
+// 載入：抓到資料並渲染
+function load(page, keyword){
+    let promise = new Promise((resolve, reject) => {
       
-      return res.json()
-        .then( data => {
-          return { status, ...data }
+      queryStatus.isQuerying = true
+      getData(page, keyword)
+        .then( res => {
+          let { nextPage } = res
+          queryStatus.isQuerying = false
+          queryStatus.nextPage = nextPage
+          
+          renderBlocks(res)
+          resolve("getAttraction done")
+        })
+        .catch( e => {
+          // console.log(e);
+          reject(e)
         })
     })
+    return promise
 }
 
-// 抓到資料並渲染
-function getData(){
-  let promise = new Promise((resolve, reject) => {
-    getAttractions()
-      .then( res => {
-        renderBlock(res)
-        queryStatus.isQuerying = false
-        resolve("getAttracion done")
-      })
-      .catch( e => {
-        console.log(e);
-      })
-  })
-
-  return promise
-  
-}
-function clearOut(){
+function clearOutBlocks(){
   while(content.firstChild){
     content.removeChild(content.firstChild)
   }
 }
-function stringQueryer(str){
-  queryStatus.keyword = str
-  queryStatus.nextPage = 0
-  clearOut()
 
-  getData()
+function renderBlocks(resObj){
+  if(resObj.error){
+    renderStatus(res.message)
+  }
+  
+  let { data } = resObj
+  for(let item of data){
+    let block = makeBlock(item)
+    content.appendChild(block)
+  }
 }
-function renderBlock(resObj){
-  let promise = new Promise((resolve, reject) => {
-    if(resObj.error){
-      renderStatus(res.message)
-      reject(false)
-    }
-    
-    let { data, nextPage } = resObj
-    
-    for(let item of data){
-      let block = makeBlock(item)
-      content.appendChild(block)
-    }
-    queryStatus.nextPage = nextPage
 
-    resolve("render done")
-  })
-
-  return promise
-}
 function renderStatus(statusStr){
   /**
    * 1. 剛載入時新抓資料時或關鍵字搜尋時：show 搜尋中、content 高度固定且資料清空 → 載入完畢 → 拔掉 show、回歸初始高度 → 交由 getData 來塞入
@@ -202,59 +159,9 @@ function renderStatus(statusStr){
   showStatus.textContent = statusStr
 
 }
-async function init(){
-  let isSign = await checkSign()
-  if(isSign){
-    notifyAuthed(isSign)
-  }
 
-  scrollBtns.forEach( btn => {
-    let direction = btn.dataset.direction
-    btn.addEventListener("click", function(){
-      scrolling(direction, this)
-    })
-    directionCounter[direction] = 0
-  })
-  
-  searchBtn.addEventListener("click", function(){
-    let input = document.querySelector(".header_bar input")
-    queryStatus.keyword = input.value
-    queryStatus.nextPage = 0
-    clearOut()
-    renderStatus()
-  
-    getData()
-  })
-
-  window.addEventListener("keyup", function(e){
-    if(e.code == "Enter"){
-      let input = document.querySelector(".header_bar input")
-      queryStatus.keyword = input.value
-      queryStatus.nextPage = 0
-      clearOut()
-      renderStatus()
-    
-      getData()
-    }
-  })
-
-  window.addEventListener("scroll", () => {
-    let scrollTop = document.documentElement.scrollTop;
-    let totalHeight = document.documentElement.scrollHeight;
-    let windowHeight = window.innerHeight;
-  
-    
-    if (scrollTop + windowHeight >= totalHeight && content.children.length != 0 && queryStatus.isQuerying == false) {
-      if(queryStatus.nextPage == null){
-        renderStatus("沒有其他資料了")
-        return
-      }
-      renderStatus("搜尋中...")
-      debounceGetData()
-    }
-  })
-
-  let promise1 = fetch("api/mrts")
+function getMRTs(){
+  return fetch("api/mrts")
     .then( res => res.json() )
     .then( res => {
       let { data } = res
@@ -267,26 +174,35 @@ async function init(){
           let input = document.querySelector(".header_bar input")
           renderStatus()
           input.value = this.textContent
-
-          stringQueryer(this.textContent)
+          console.log(input.value);
+          clearOutBlocks()
+          load(0, input.value)
         })
 
         scroller.append(elMrt)
       } 
       return "get MRT Done"
-  })
-  let promise2 = getData()
+    })
+}
 
-  Promise.all([promise1, promise2])
+async function init(){
+  let isSign = await checkSign()
+  if(isSign){
+    notifyAuthed(isSign)
+  }
+
+  let promise1 = getMRTs()
+  let promise2 = load(0)
+
+  Promise.all([ promise1, promise2 ])
     .then( () => { 
       loadingControl()
     })
-    .catch( e =>{
+    .catch( e => {
       console.log(e);
     })
-
 }
-// 生成有防抖保護的 function
+
 function debounce(func, delay) {
   let timer;
 
@@ -302,5 +218,51 @@ function debounce(func, delay) {
   };
 }
 
+scrollBtns.forEach( btn => {
+  let { direction } = btn.dataset
+  btn.onclick = function(){
+    scrolling(direction, this)
+  }
+  directionCounter[direction] = 0
+})
+
+searchBtn.onclick = () => {
+  let input = document.querySelector(".header_bar input")
+  let keyword = input.value
+  queryStatus.nextPage = null
+
+  clearOutBlocks()
+  renderStatus()
+  load(0, keyword)
+}
+  
+window.onkeyup = (e) => {
+  if(e.code == "Enter"){
+    let input = document.querySelector(".header_bar input")
+    let keyword = input.value
+    queryStatus.nextPage = null
+  
+    clearOutBlocks()
+    renderStatus()
+    load(0, keyword)
+  }
+}
+  
+window.onscroll = () => {
+  let scrollTop = document.documentElement.scrollTop;
+  let totalHeight = document.documentElement.scrollHeight;
+  let windowHeight = window.innerHeight;
+
+  
+  if (scrollTop + windowHeight >= totalHeight && content.children.length != 0 && queryStatus.isQuerying == false) {
+    if(queryStatus.nextPage == null){
+      renderStatus("沒有其他資料了")
+      return
+    }
+    renderStatus("搜尋中...")
+    debounceLoad(queryStatus.nextPage)
+  }
+}
+
 init()
-let debounceGetData = debounce(getData, 300)
+let debounceLoad = debounce(load, 300)

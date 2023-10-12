@@ -1,5 +1,3 @@
-import { checkSign } from './utility.js'
-
 const initNav = (function (){
   const signout = document.querySelector(".signout")
   const sign = document.querySelector(".sign")
@@ -11,6 +9,7 @@ const initNav = (function (){
       let currentURL = window.location.href
       window.location.href = currentURL
     })
+
     window.addEventListener('userAuthenticated', e => {
       let { detail } = e
       if(detail != null){ 
@@ -51,4 +50,5 @@ const initNav = (function (){
     })
   }
 })();
+
 initNav()

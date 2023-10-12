@@ -19,8 +19,6 @@ timeIpnuts.forEach( input => {
     feeInput.value = price
     console.log(feeInput.value);
   })
-
-  
 })
 
 submit.addEventListener("click", e => {
@@ -171,8 +169,6 @@ async function init(){
           setCarousel("index", index)
         }
       })
-      
-
     })
   
   document.querySelector("input[name='attractionId']").value = window.location.href.match(/\/(\d+)$/)[1]
