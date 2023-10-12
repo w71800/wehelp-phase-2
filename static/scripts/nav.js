@@ -11,23 +11,22 @@ const initNav = (function (){
       let currentURL = window.location.href
       window.location.href = currentURL
     })
-    
-    checkSign()
-      .then( data => {
-        if(data != null){ 
-          let navOptions = document.querySelector(".navbar_options")
-          let sign = document.querySelector(".sign")
-          let signout = document.querySelector(".signout")
-          
-          let el = document.createElement("div")
-          el.textContent = `哈囉，${data.name}！`
-          el.classList.add("navbar_hello")
-          navOptions.prepend(el)
-          
-          signout.classList.remove("inactive")
-          sign.classList.add("inactive")
-        }
-      })
+    window.addEventListener('userAuthenticated', e => {
+      let { detail } = e
+      if(detail != null){ 
+        let navOptions = document.querySelector(".navbar_options")
+        let sign = document.querySelector(".sign")
+        let signout = document.querySelector(".signout")
+        
+        let el = document.createElement("div")
+        el.textContent = `哈囉，${detail.name}！`
+        el.classList.add("navbar_hello")
+        navOptions.prepend(el)
+        
+        signout.classList.remove("inactive")
+        sign.classList.add("inactive")
+      }
+    });
     
     sign.addEventListener("click", ()=>{
       let filter = document.querySelector(".filter")

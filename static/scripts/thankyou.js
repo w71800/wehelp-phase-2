@@ -1,4 +1,4 @@
-import { checkSign, loadingControl } from './utility.js'
+import { checkSign, loadingControl, notifyAuthed } from './utility.js'
 const thankyouName = document.querySelector("span.name")
 const orderNumber = document.querySelector(".number span")
 const tripsDiv = document.querySelector(".trips")
@@ -85,19 +85,23 @@ function makeTrip(dataObj) {
 
 
 async function init(){
-  if(localStorage.token){
-    let user = await checkSign()
+  let isSign = await checkSign()
+  if(isSign){
     let order = await getOrder()
+    let user = isSign
     let { data } = order
+    notifyAuthed(isSign)
     
     for(let trip of data.trips){
       tripsDiv.append(makeTrip(trip))
     }
+
     totalDiv.textContent = `總價：新台幣 ${data.price} 元`
     thankyouName.textContent = user.name
     orderNumber.textContent = data.number
     loadingControl()
-  }else{
+  }
+  else{
     window.location.href = "/"
   }
 

@@ -26,6 +26,11 @@ function inputIsEmpty(str){
   return str.trim() === '' ? true : false
 }
 
+function notifyAuthed(authData){
+  const event = new CustomEvent('userAuthenticated', { detail: authData });
+  window.dispatchEvent(event);
+}
+
 const loadingControl = (function (){
   let nowLoading = document.querySelector("#loading")
 
@@ -40,4 +45,5 @@ const loadingControl = (function (){
   }
 })();
 
-export { checkSign, showSign, inputIsEmpty, loadingControl }
+
+export { checkSign, showSign, inputIsEmpty, loadingControl, notifyAuthed }

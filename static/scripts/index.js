@@ -1,4 +1,4 @@
-import { loadingControl } from './utility.js'
+import { loadingControl, notifyAuthed, checkSign } from './utility.js'
 
 const scrollBtns = document.querySelectorAll(".scroll_btn")
 const scroller = document.querySelector(".scroll_scroller")
@@ -172,7 +172,11 @@ function renderStatus(statusStr){
   showStatus.textContent = statusStr
 
 }
-function init(){
+async function init(){
+  let isSign = await checkSign()
+  if(isSign){
+    notifyAuthed(isSign)
+  }
   scrollBtns.forEach( btn => {
     let direction = btn.dataset.direction
     btn.addEventListener("click", function(){

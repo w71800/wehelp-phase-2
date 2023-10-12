@@ -1,4 +1,4 @@
-import { showSign, checkSign, loadingControl } from "./utility.js";
+import { showSign, checkSign, loadingControl, notifyAuthed } from "./utility.js";
 
 const url = window.location.href;
 const id = url.match(/attraction\/(\d+)/)[1]
@@ -102,7 +102,11 @@ function render(data){
 
 }
 
-function init(){
+async function init(){
+  let isSign = await checkSign()
+  if(isSign){
+    notifyAuthed(isSign)
+  }
   getData()
     .then( data => {
       const setCarousel = (function(){
