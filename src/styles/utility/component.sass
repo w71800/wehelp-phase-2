@@ -29,16 +29,19 @@
       font-size: 1rem
       padding: 10px
       min-width: 70px
-      &.sign
-        cursor: pointer
+      &.dashboard
+        a
+          color: #000
       &.inactive
         display: none
+      &:hover
+        color: vars.$color_primary
+        a
+          color: vars.$color_primary
     .navbar_hello
       color: vars.$color_secondary
       font-weight: 500
       padding: 10px
-
-
   a
     text-decoration: none
     color: vars.$color_primary

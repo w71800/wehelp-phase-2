@@ -68,6 +68,17 @@
   #page-booking #info .submit {
     right: 0;
   }
+
+  #page-thankyou #order .container .trips .trip {
+    display: block;
+    text-align: left;
+  }
+  #page-thankyou #order .container .trips .trip img {
+    margin-bottom: 20px;
+  }
+  #page-thankyou #order .container .trips .trip .info {
+    padding: 0;
+  }
 }
 @media screen and (max-width: 500px) {
   #navbar .container .navbar_options .navbar_option {
@@ -132,11 +143,17 @@
   padding: 10px;
   min-width: 70px;
 }
-#navbar .navbar_options .navbar_option.sign {
-  cursor: pointer;
+#navbar .navbar_options .navbar_option.dashboard a {
+  color: #000;
 }
 #navbar .navbar_options .navbar_option.inactive {
   display: none;
+}
+#navbar .navbar_options .navbar_option:hover {
+  color: #448899;
+}
+#navbar .navbar_options .navbar_option:hover a {
+  color: #448899;
 }
 #navbar .navbar_options .navbar_hello {
   color: #757575;
@@ -406,7 +423,8 @@ body.disable-scroll {
 #order .container {
   border-top: 1px solid #E8E8E8;
   border-bottom: 1px solid #E8E8E8;
-  padding: 30px 0px;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 #order .trip {
   display: flex;
@@ -443,4 +461,12 @@ body.disable-scroll {
   text-align: right;
   font-weight: 700;
   color: #757575;
+}
+
+.redirect a {
+  color: #000;
+  font-weight: 700;
+}
+.redirect a:hover {
+  color: #448899;
 }

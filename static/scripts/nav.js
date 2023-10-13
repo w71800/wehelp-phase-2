@@ -16,12 +16,14 @@ const initNav = (function (){
         let navOptions = document.querySelector(".navbar_options")
         let sign = document.querySelector(".sign")
         let signout = document.querySelector(".signout")
+        let dashboard = document.querySelector(".dashboard")
         
         let el = document.createElement("div")
         el.textContent = `哈囉，${detail.name}！`
         el.classList.add("navbar_hello")
         navOptions.prepend(el)
         
+        dashboard.classList.remove("inactive")
         signout.classList.remove("inactive")
         sign.classList.add("inactive")
       }
@@ -44,6 +46,7 @@ const initNav = (function (){
         filter.classList.toggle("active")
         setTimeout(()=>{
           let boxContainer = document.querySelector(".box_container")
+          boxContainer.classList.add("fromBooking")
           boxContainer.classList.toggle("active")
         },100)
       }

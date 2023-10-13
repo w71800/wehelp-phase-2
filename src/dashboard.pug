@@ -4,6 +4,26 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title 會員中心
-  body 
+    link(rel="stylesheet", href="{{url_for('static', filename='dashboard.css')}}")
+  body.disable-scroll
     #page-dashboard
-      h1 會員中心建置中
+      include ./components/nav.pug
+      include ./components/sign.pug
+      include ./components/nowLoading.pug
+      
+      #header
+        .container 
+          .title 歡迎！
+          .signout 會員登出
+      #history
+        .container
+          .title 以下是您的歷史訂單：
+          #toggle.orders_toggle 
+            span 展開
+            img(src="{{ url_for('static', filename='imgs/triangle.png')}}" alt="")
+          .orders
+            .hint 您沒有歷史訂單。
+
+      include ./components/footer.pug
+
+script(src="{{ url_for('static', filename='/scripts/dashboard.js') }}" type="module")

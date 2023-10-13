@@ -8,6 +8,7 @@ from api.auth import auth_blueprint
 from api.booking import booking_blueprint
 from api.order import order_blueprint
 from api.order_number import order_number_blueprint
+from api.orders import orders_blueprint
 
 blueprints = [
 	attractions_blueprint,
@@ -18,6 +19,7 @@ blueprints = [
 	booking_blueprint,
 	order_blueprint,
 	order_number_blueprint,
+	orders_blueprint
 ]
 app = Flask(__name__)
 

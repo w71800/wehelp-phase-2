@@ -26,8 +26,8 @@ function getOrder(){
 function makeTrip(dataObj) {
   let { attraction, date, time } = dataObj;
 
-  let order = document.createElement("div");
-  order.classList.add("trip");
+  let trip = document.createElement("div");
+  trip.classList.add("trip");
 
   let img = document.createElement("img");
   img.setAttribute("src", attraction.image[0]);
@@ -77,10 +77,10 @@ function makeTrip(dataObj) {
   info.appendChild(infoTime);
   info.appendChild(infoAddress);
 
-  order.appendChild(img);
-  order.appendChild(info);
+  trip.appendChild(img);
+  trip.appendChild(info);
 
-  return order;
+  return trip;
 }
 
 async function init(){

@@ -4,10 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>會員中心</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='dashboard.css')}}">
   </head>
-  <body> 
+  <body class="disable-scroll">
     <div id="page-dashboard">
-      <h1>會員中心建置中</h1>
+      <div class="psuedo">
+        <div id="navbar">
+          <div class="container">
+            <div class="navbar_title"> <a href="/">台北一日遊</a></div>
+            <div class="navbar_options">
+              <div class="navbar_option booking">預定行程</div>
+              <div class="navbar_option sign">登入/註冊</div>
+              <div class="navbar_option signout inactive" style="display: none">登出</div>
+              <div class="navbar_option dashboard inactive"> <a href="/dashboard">會員中心</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="{{ url_for('static', filename='/scripts/nav.js') }}" type="module"></script>
+      <div class="filter"></div>
+      <div class="box_container">
+        <div class="signin" id="box">
+          <div class="box_title">登入會員帳號</div>
+          <div class="box_cross"><img src="{{ url_for('static', filename='imgs/icon_close.png') }}"></div>
+          <form action="" method="">
+            <input required type="text" name="email" id="email" placeholder="輸入電子信箱">
+            <input required type="password" name="password" id="password" placeholder="輸入密碼">
+            <input type="submit" value="登入帳戶">
+          </form>
+          <div class="box_hint">還沒有帳戶？<span>點此註冊</span></div>
+          <div class="sign_status"></div>
+        </div>
+        <div class="signup inactive" id="box">
+          <div class="box_title">註冊會員帳號</div>
+          <div class="box_cross"><img src="{{ url_for('static', filename='imgs/icon_close.png') }}"></div>
+          <form action="/api/user" method="POST">
+            <input required type="text" name="name" id="name" placeholder="輸入姓名">
+            <input required type="text" name="email" id="email" placeholder="輸入電子信箱">
+            <input required type="password" name="password" id="password" placeholder="輸入密碼">
+            <input type="submit" value="註冊帳戶">
+          </form>
+          <div class="box_hint">已經有帳戶了？<span>點此登入</span></div>
+          <div class="sign_status"></div>
+        </div>
+      </div>
+      <script src="{{ url_for('static', filename='/scripts/sign.js') }}"></script>
+      <div class="bounce active" id="loading"><span>n</span><span>o</span><span>w </span><span>&nbsp;</span><span>l</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span><span>.</span><span>.</span><span>.</span></div>
+      <script src="{{ url_for('static', filename='/scripts/nowLoading.js') }}" type="module"></script>
+      <div id="header">
+        <div class="container"> 
+          <div class="title">歡迎！</div>
+          <div class="signout">會員登出</div>
+        </div>
+      </div>
+      <div id="history">
+        <div class="container">
+          <div class="title">以下是您的歷史訂單：</div>
+          <div class="orders_toggle" id="toggle"> <span>展開</span><img src="{{ url_for('static', filename='imgs/triangle.png')}}" alt=""></div>
+          <div class="orders">
+            <div class="hint">您沒有歷史訂單。</div>
+          </div>
+        </div>
+      </div>
+      <div id="footer">
+        <div class="footer_content">COPYRIGHT © 2023 台北一日遊</div>
+      </div>
     </div>
   </body>
 </html>
+<script src="{{ url_for('static', filename='/scripts/dashboard.js') }}" type="module"></script>
