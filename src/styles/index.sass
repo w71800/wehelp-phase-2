@@ -5,6 +5,9 @@
 
 // Layout //
 
+#page-index
+  height: 100vh
+  
 #header
   +vars.center
   background-size: cover
@@ -86,6 +89,8 @@
 
 #main
   +vars.center
+  &.span
+    height: 100%
   .container
     // border: 1px solid #000
   .content
@@ -93,6 +98,7 @@
     padding: 10px
     margin-bottom: 10px
     +vars.setBlockNums(4)
+    
   .status
     text-align: center
     color: vars.$color_secondary

@@ -4,13 +4,8 @@ const ordersDiv = document.querySelector(".orders")
 const signoutDiv = document.querySelector("#header .signout")
 const welcomeTitleDiv = document.querySelector("#header .title")
 const ordersHintDiv = document.querySelector(".orders .hint")
+const footerDiv = document.querySelector("#footer")
 
-spanToggle.onclick = function(){
-  let img = this.querySelector("img")
-  let orders = this.nextElementSibling
-  img.classList.toggle("fold")
-  orders.classList.toggle("fold")
-}
 
 async function init(){
   let user = await checkSign()
@@ -24,13 +19,18 @@ async function init(){
 
   let data = await getOrders()
   let orders = data.data
-  ordersHintDiv.classList.add("inactive")
-
-  orders.sort((order1, order2) => order2.payment - order1.payment )
-  for(let order of orders){
-    let el = makeOrder(order)
-    ordersDiv.append(el)
+  console.log(orders);
+  if(!orders){
+    footerDiv.classList.add("fixed")
+  }else{
+    ordersHintDiv.classList.add("inactive")
+    orders.sort((order1, order2) => order2.payment - order1.payment )
+    for(let order of orders){
+      let el = makeOrder(order)
+      ordersDiv.append(el)
+    }
   }
+
   
   let ordersHeight = window.getComputedStyle(ordersDiv).height
   ordersDiv.style.height = ordersHeight
@@ -149,5 +149,18 @@ signoutDiv.onclick = () => {
   
   localStorage.token = null
   window.location.href = "/"
+}
+
+spanToggle.onclick = function(){
+  let img = this.querySelector("img")
+  let span = this.querySelector("span")
+  let orders = this.nextElementSibling
+  img.classList.toggle("fold")
+  orders.classList.toggle("fold")
+  if(orders.classList.contains("fold")){
+    span.textContent = "展開"
+  }else{
+    span.textContent = "收合"
+  }
 }
 

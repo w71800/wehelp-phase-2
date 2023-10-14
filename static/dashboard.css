@@ -98,6 +98,17 @@
   #page-index #main .container .content .block {
     width: calc(((100% - (1 - 1) * 25px)) / 1);
   }
+
+  #page-dashboard .orders .trip {
+    display: block;
+    text-align: left;
+  }
+  #page-dashboard .orders .trip img {
+    margin-bottom: 20px;
+  }
+  #page-dashboard .orders .trip .info {
+    padding: 0;
+  }
 }
 @media screen and (max-width: 360px) {
   #page-index #navbar .container {
@@ -176,6 +187,10 @@
 #footer .footer_content {
   font-weight: 700;
   color: white;
+}
+#footer.fixed {
+  position: absolute;
+  bottom: 0;
 }
 
 .filter {
@@ -381,6 +396,10 @@ body.disable-scroll {
   overflow: hidden;
 }
 
+#page-dashboard {
+  height: 100vh;
+}
+
 #navbar {
   border-bottom: 1px solid #E8E8E8;
 }
@@ -406,7 +425,7 @@ body.disable-scroll {
   height: 15px;
   margin-left: 10px;
   opacity: 0.3;
-  transition: 0.3s;
+  transition: 0.5s;
   transform: rotate(180deg);
   top: 3px;
   transform-origin: center center;
@@ -431,11 +450,10 @@ body.disable-scroll {
 #header .signout {
   position: absolute;
   top: 50%;
-  right: 0;
+  right: 20px;
   transform: translateY(-50%);
   font-size: 1rem;
   color: #757575;
-  margin-left: 40px;
   cursor: pointer;
 }
 #header .signout:hover {
@@ -459,6 +477,7 @@ body.disable-scroll {
 #history .orders {
   transition: 0.5s;
   overflow: hidden;
+  padding-left: 20px;
 }
 #history .orders.fold {
   height: 0 !important;

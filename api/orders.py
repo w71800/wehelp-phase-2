@@ -35,6 +35,10 @@ def api_orders():
 				}
 
 				data.append(dict)
+			
+
+			if len(data) == 0:
+				data = None
 
 			response = { "data": data }
 			return make_response(jsonify(response), 200)

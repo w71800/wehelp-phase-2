@@ -3,6 +3,9 @@
 @use './utility/component'
 @use './utility/reset'
 
+#page-dashboard
+  height: 100vh
+  
 #navbar
   border-bottom: 1px solid #E8E8E8
 .psuedo
@@ -24,7 +27,7 @@
     height: 15px
     margin-left: 10px
     opacity: 0.3
-    transition: .3s
+    transition: .5s
     transform: rotate(180deg)
     top: 3px
     // border: 1px solid #000
@@ -46,11 +49,10 @@
   .signout
     position: absolute
     top: 50%
-    right: 0
+    right: 20px
     transform: translateY(-50%)
     font-size: 1rem
     color: vars.$color_secondary
-    margin-left: 40px
     cursor: pointer
     &:hover
       color: vars.$color_warning
@@ -70,6 +72,7 @@
   .orders
     transition: .5s
     overflow: hidden
+    padding-left: 20px
     &.fold
       height: 0 !important
     .hint

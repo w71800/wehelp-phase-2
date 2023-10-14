@@ -177,6 +177,10 @@
   font-weight: 700;
   color: white;
 }
+#footer.fixed {
+  position: absolute;
+  bottom: 0;
+}
 
 .filter {
   position: absolute;
@@ -381,6 +385,10 @@ body.disable-scroll {
   overflow: hidden;
 }
 
+#page-index {
+  height: 100vh;
+}
+
 #header {
   display: flex;
   align-items: center;
@@ -492,6 +500,9 @@ body.disable-scroll {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+#main.span {
+  height: 100%;
 }
 #main .content {
   width: 100%;

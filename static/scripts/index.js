@@ -6,6 +6,7 @@ const scrollContainer = document.querySelector(".scroll_container")
 const content = document.querySelector(".content")
 const searchBtn = document.querySelector(".header_icon")
 const showStatus = document.querySelector(".status")
+const mainDiv = document.querySelector("#main")
 let directionCounter = {}
 let queryStatus = {
   nextPage: null,
@@ -174,9 +175,15 @@ function getMRTs(){
           let input = document.querySelector(".header_bar input")
           renderStatus()
           input.value = this.textContent
-          console.log(input.value);
+          mainDiv.classList.add("span")
           clearOutBlocks()
           load(0, input.value)
+            .then(()=>{
+              mainDiv.classList.remove("span")
+              // setTimeout(()=>{
+              //   mainDiv.classList.remove("span")
+              // },1000)
+            })
         })
 
         scroller.append(elMrt)
@@ -230,10 +237,11 @@ searchBtn.onclick = () => {
   let input = document.querySelector(".header_bar input")
   let keyword = input.value
   queryStatus.nextPage = null
-
+  
   clearOutBlocks()
   renderStatus()
   load(0, keyword)
+
 }
   
 window.onkeyup = (e) => {
