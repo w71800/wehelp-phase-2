@@ -1,28 +1,15 @@
-import { showSign, checkSign } from "./utility.js";
+import { showSign, checkSign, loadingControl, notifyAuthed } from "./utility.js";
 
 const url = window.location.href;
 const id = url.match(/attraction\/(\d+)/)[1]
 const carouselBtns = document.querySelectorAll(".carousel-btn")
-const prevBtn = document.querySelector(".prev")
-const nextBtn = document.querySelector(".next")
 const carouselImgs = document.querySelector(".carousel-imgs").children
 const carouselIndicators = document.querySelector(".carousel-indicators").children
 const timeIpnuts = document.querySelectorAll(".input-time input")
 const fee = document.querySelector(".fee")
-const signout = document.querySelector(".signout")
 const submit = document.querySelector("input.panel-button[type='submit']")
 const attractionForm = document.querySelector("#page-attraction .area form")
-let carouselStatus = {
-  now: 0,
-  previousIsActive: false,
-  nextIsActive: true
-}
-carouselBtns.forEach( btn => {
-  btn.addEventListener("click", function(){
-    let direction = btn.dataset.direction
-    carouselRun(direction)
-  })
-})
+
 timeIpnuts.forEach( input => {
   input.addEventListener("click", function(){
     let price = input.dataset.price
@@ -32,8 +19,6 @@ timeIpnuts.forEach( input => {
     feeInput.value = price
     console.log(feeInput.value);
   })
-
-  
 })
 
 submit.addEventListener("click", e => {
@@ -116,45 +101,77 @@ function render(data){
 }
 
 async function init(){
-  let data = await getData()
-  render(data)
-  document.querySelector("input[name='attractionId']").value = window.location.href.match(/\/(\d+)$/)[1]
-}
-
-function carouselRun(direction){
-  let { now } = carouselStatus
-  if(direction == "next"){
-    if(now == carouselImgs.length - 1){
-      return
-    }
-    carouselStatus.now += 1
-
-    carouselImgs[carouselStatus.now - 1].classList.remove("active")
-    carouselIndicators[carouselStatus.now - 1].classList.remove("active")
-    carouselImgs[carouselStatus.now].classList.add("active")
-    carouselIndicators[carouselStatus.now].classList.add("active")
-    // if(carouselStatus.now == carouselImgs.length - 1) {
-    //   nextBtn.classList.add("hide")
-    // }else{
-    //   nextBtn.classList.remove("hide")
-    // }
-  }else if(direction == "previous"){
-    if(now == 0){
-      return
-    }
-    carouselStatus.now -= 1
-
-    carouselImgs[carouselStatus.now + 1].classList.remove("active")
-    carouselIndicators[carouselStatus.now + 1].classList.remove("active")
-    carouselImgs[carouselStatus.now].classList.add("active")
-    carouselIndicators[carouselStatus.now].classList.add("active")
+  let isSign = await checkSign()
+  if(isSign){
+    notifyAuthed(isSign)
   }
+  getData()
+    .then( data => {
+      const setCarousel = (function(){
+        let now = 0
+        let last, max = data.images.length - 1 
+        
+        return function(mode, param){
+          if(mode == "direction"){
+            let direction = param
 
+            if(direction == "next"){
+              now += 1
+              last = now - 1
+              
+              if(now > max){
+                // 最多是 7 但現在 now 是 8 了
+                now = 0
+                last = data.images.length - 1
+              }
+            }
+            if(direction == "previous"){
+              now -= 1
+              last = now + 1
+              
+              if(now < 0){
+                // 最小是 0 但現在 now 是 -1 了
+                now = data.images.length - 1
+                last = 0
+              }
+            }
+          }
+          if(mode == "index"){
+            let index = param
+
+            last = now
+            now = index
+          }
+          
+          
+          let nowImg = carouselImgs[now]
+          let nowIndicator = carouselIndicators[now]
+          let lastImg = carouselImgs[last]
+          let lastIndicator = carouselIndicators[last]
+          
+          lastImg.classList.remove("active")
+          lastIndicator.classList.remove("active")
+          nowImg.classList.add("active")
+          nowIndicator.classList.add("active")
+        }
+      })();
+
+      render(data)
+      loadingControl()
+      carouselBtns.forEach( btn => {
+        btn.addEventListener("click", function(){
+          let direction = btn.dataset.direction
+          setCarousel("direction", direction)
+        })
+      })
+      Array.from(carouselIndicators).forEach( (indicator, index) => {
+        indicator.onclick = () => {
+          setCarousel("index", index)
+        }
+      })
+    })
   
-
-
-  // carouselStatus.now += 1
-  // console.log(carouselStatus.now);
+  document.querySelector("input[name='attractionId']").value = window.location.href.match(/\/(\d+)$/)[1]
 }
 
 

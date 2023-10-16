@@ -5,14 +5,19 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title 感謝訂購
     link(rel="stylesheet", href="{{url_for('static', filename='thankyou.css')}}")
-  body 
+  body.disable-scroll
     #page-thankyou
       include ./components/nav.pug
+      include ./components/nowLoading.pug
       .title
         span.name 嗙
         span ，謝謝您！
       .number 您的訂單編號是：
         span 
+      #order
+        .container
+          .trips
+          .total_price
       .redirect
         a(href="/dashboard") 前往會員中心
       

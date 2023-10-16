@@ -1,4 +1,4 @@
-function factorySign(){
+const initSign = (function (){
   const signinForm = document.querySelector("#box.signin form")
   const signupForm = document.querySelector("#box.signup form")
   const changeSpan = document.querySelectorAll("span")
@@ -52,6 +52,10 @@ function factorySign(){
         localStorage.setItem("token", result.token)
         
         setTimeout(()=>{
+          if(boxContainer.classList.contains("fromBooking")){
+            window.location.href = "/booking"  
+            return
+          }
           let currentURL = window.location.href;
           window.location.href = currentURL
         }, 1000)
@@ -110,6 +114,7 @@ function factorySign(){
     
     cross.forEach( item => {
       item.addEventListener("click", () => {  
+        boxContainer.classList.remove("fromBooking")
         boxContainer.classList.toggle("active")
         setTimeout(()=>{
           let filter = document.querySelector(".filter")
@@ -119,9 +124,8 @@ function factorySign(){
     
     })
   }
-}
+})();
 
-let initSign = factorySign()
 initSign()
 
 

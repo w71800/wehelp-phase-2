@@ -3,11 +3,12 @@ html(lang="en")
   head
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title Document
+    title 訂單頁面
     link(rel="stylesheet", href="{{url_for('static', filename='booking.css')}}")
-  body 
+  body.disable-scroll
     #page-booking
       include ./components/nav.pug
+      include ./components/nowLoading.pug
       include ./components/sign.pug
       #bookings 
         .container
@@ -20,13 +21,13 @@ html(lang="en")
           form.contact
             .wrapper
               label(for="") 聯絡姓名：
-              input(name="name" value="嗙" required)
+              input(name="name" required)
             .wrapper
               label(for="") 連絡信箱：
-              input(name="email" value="test@admin" required)
+              input(name="email" required)
             .wrapper
               label(for="") 手機號碼：
-              input(name="phone" value="0900000000" required)
+              input(name="phone" placeholder="聯絡用電話號碼" required)
             .hint 請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。
         .container
           .title 信用卡付款資訊
@@ -45,8 +46,8 @@ html(lang="en")
             .total 總價：新台幣 0 元
             .button 確認訂購並付款
 
-
       include ./components/footer.pug
+
   script(src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0") 
   script(src="{{ url_for('static', filename='/scripts/booking.js') }}" type="module")
 

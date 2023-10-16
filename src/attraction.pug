@@ -5,9 +5,10 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title 景點資料
     link(rel="stylesheet", href="{{url_for('static', filename='attraction.css')}}")
-  body 
+  body.disable-scroll
     #page-attraction
       include ./components/nav.pug
+      include ./components/nowLoading.pug
       include ./components/sign.pug
       #main
         .container

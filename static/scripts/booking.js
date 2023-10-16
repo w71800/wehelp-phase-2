@@ -1,4 +1,4 @@
-import { checkSign, inputIsEmpty } from './utility.js'
+import { checkSign, inputIsEmpty, loadingControl, notifyAuthed } from './utility.js'
 const bookingsContainer = document.querySelector("#bookings .container")
 const bookingsStatus = document.querySelector("#bookings .container .status")
 const title = document.querySelector("#bookings .container .title")
@@ -9,7 +9,6 @@ const contactForm = document.querySelector("form.contact")
 const submit = document.querySelector(".submit .button")
 const APP_ID = 137131
 const APP_KEY = "app_onbClmcZKvEFRCATMGonfO2tuvoiwkp3StYnwRCX62dzLWZXGMNecPuyaJxK"
-let isbookingEmpty = true
 let order = {}
 const fields = {
   number: {
@@ -71,16 +70,20 @@ submit.addEventListener("click", onSubmit)
 
 async function init() {
   let isSign = await checkSign()
-  console.log(isSign);
 
   if(isSign){
     title.textContent = `您好，${isSign.name}，待預訂的行程如下：`
-    
+    contactForm.querySelector("[name='name']").value = isSign.name
+    contactForm.querySelector("[name='email']").value = isSign.email
+    notifyAuthed(isSign)
+
     getBookings()
       .then( bookings => {
         makeOrder(bookings)
         render(bookings)
           .then( result => {
+            loadingControl()
+            
             if(result == "nothing"){
               let elementRect = bookingFooter.getBoundingClientRect() 
               let distanceToBottom = window.innerHeight - elementRect.top

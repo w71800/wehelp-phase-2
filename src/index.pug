@@ -5,9 +5,10 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title 首頁
     link(rel="stylesheet", href="{{url_for('static', filename='index.css')}}")
-  body 
+  body.disable-scroll
     #page-index
       include ./components/nav.pug
+      include ./components/nowLoading.pug
       
       #header(
         style="background-image: url({{ url_for('static', filename='imgs/header.png') }})"

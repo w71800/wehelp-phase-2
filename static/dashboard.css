@@ -98,6 +98,17 @@
   #page-index #main .container .content .block {
     width: calc(((100% - (1 - 1) * 25px)) / 1);
   }
+
+  #page-dashboard .orders .trip {
+    display: block;
+    text-align: left;
+  }
+  #page-dashboard .orders .trip img {
+    margin-bottom: 20px;
+  }
+  #page-dashboard .orders .trip .info {
+    padding: 0;
+  }
 }
 @media screen and (max-width: 360px) {
   #page-index #navbar .container {
@@ -385,202 +396,147 @@ body.disable-scroll {
   overflow: hidden;
 }
 
-#page-index {
+#page-dashboard {
   height: 100vh;
 }
 
-#header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-size: cover;
-  padding: 50px 0px;
-}
-#header * {
-  color: #F8F8F8;
-}
-#header .container {
-  height: 200px;
-}
-#header .container > * {
-  margin-bottom: 20px;
-}
-#header .header_title {
-  font-size: 28px;
-}
-#header .header_subtitle {
-  font-size: 1rem;
-}
-#header .header_bar {
-  display: flex;
-  height: 46px;
-}
-#header input {
-  width: min(320px, 80%);
-  border-radius: 5px 0 0 5px;
-  appearance: none;
-  border: none;
-  color: #757575;
-  font-size: 1rem;
-  padding-left: 15px;
-}
-#header input::placeholder {
-  font-size: 1rem;
-  color: #757575;
-  font-weight: 700;
-}
-#header .header_icon {
-  min-width: 50px;
-  flex-basis: 60px;
-  border-radius: 0px 5px 5px 0px;
-  display: flex;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #448899;
-  height: 46px;
-  cursor: pointer;
+#navbar {
+  border-bottom: 1px solid #E8E8E8;
 }
 
-#scroller {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 10px;
+.psuedo {
+  margin-bottom: 40px;
 }
-#scroller .container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#scroller .scroll {
-  width: calc(100% - 64px - 20px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#scroller .scroll_container {
-  overflow: hidden;
-  display: flex;
-}
-#scroller .scroll_scroller {
-  white-space: nowrap;
-  transition: 0.3s;
-}
-#scroller .mrt {
+
+#toggle {
+  margin-bottom: 20px;
   cursor: pointer;
   display: inline-block;
-  font-size: 1rem;
-  padding: 5px 15px;
-  color: #666;
+  user-select: none;
+  -webkit-user-select: none;
 }
-#scroller .scroll_btn {
-  position: absolute;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  opacity: 0.6;
-  cursor: pointer;
-  z-index: 10;
+#toggle * {
+  vertical-align: middle;
+  -webkit-user-select: none;
+  user-select: none;
 }
-#scroller .scroll_btn.inactive {
+#toggle img {
+  width: 15px;
+  height: 15px;
+  margin-left: 10px;
   opacity: 0.3;
-  cursor: default;
+  transition: 0.5s;
+  transform: rotate(180deg);
+  top: 3px;
+  transform-origin: center center;
 }
-#scroller .scroll_btn.backward {
-  transform: translateX(calc(-100% + -10px));
-  left: 0;
+#toggle img.fold {
+  top: 2px;
+  transform: rotate(90deg);
 }
-#scroller .scroll_btn.forward {
-  transform: translateX(calc(100% + 10px));
-  right: 0;
+#toggle span {
+  color: rgba(117, 117, 117, 0.5);
 }
 
-#main {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+#header .container {
+  margin: 0 auto;
 }
-#main.span {
-  height: 100%;
-}
-#main .content {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: flex-start;
-  gap: 25px 25px;
-  flex-wrap: wrap;
-}
-#main .content .block {
-  width: calc(((100% - (4 - 1) * 25px)) / 4);
-}
-#main .status {
-  text-align: center;
+#header .title {
+  font-size: 1.4rem;
+  font-weight: 700;
   color: #757575;
-  padding: 20px 0px;
-  opacity: 0;
+  margin-bottom: 20px;
 }
-#main .status.show {
-  opacity: 1;
+#header .signout {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: #757575;
+  cursor: pointer;
 }
-#main .block {
-  height: 242px;
-  border: 1px solid #E8E8E8;
-  border-radius: 5px;
+#header .signout:hover {
+  color: #f54254;
 }
-#main .block_img {
-  height: 80%;
+
+#history {
+  margin-bottom: 20px;
 }
-#main img {
-  height: 100%;
-  width: 100%;
+#history .title {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #757575;
+  margin-bottom: 20px;
+}
+#history .container {
+  margin: 0 auto;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+#history .orders {
+  transition: 0.5s;
+  overflow: hidden;
+  padding-left: 20px;
+}
+#history .orders.fold {
+  height: 0 !important;
+}
+#history .orders .hint.inactive {
+  display: none;
+}
+#history .order {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #E8E8E8;
+  padding-bottom: 20px;
+}
+#history .order_number {
+  font-weight: 500;
+  color: #888;
+  margin-bottom: 20px;
+}
+#history .order_number span {
+  margin-left: 5px;
+}
+#history .order_number span.paid {
+  color: #448899;
+}
+#history .order_number span.unpaid {
+  color: #f54254;
+}
+#history .trip {
+  display: flex;
+  margin-bottom: 30px;
+}
+#history .trip img {
+  width: 250px;
   object-fit: cover;
 }
-#main a {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+#history .trip .info {
+  padding-left: 30px;
 }
-#main .block_info {
-  background-color: #fff;
-  height: 20%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+#history .trip .info > * {
+  margin-bottom: 20px;
 }
-#main .block_info .mrt, #main .block_info .category, #main .block_info .title {
-  padding: 0px 10px;
-}
-#main .block_info .mrt, #main .block_info .category {
+#history .trip .info * {
+  font-weight: 700;
+  font-size: 1rem;
   color: #757575;
+  text-align: left;
 }
-#main .block_info .title {
-  display: flex;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  transform: translateY(-100%);
-  height: 100%;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
+#history .trip .info span {
+  font-weight: 500;
+}
+#history .trip .info .info_name {
+  color: #448899;
+  margin-bottom: 25px;
+}
+#history .trip .info .info_name span {
+  color: inherit;
+  font-weight: inherit;
+}
+#history .total_price {
+  text-align: right;
   font-weight: 700;
-}
-
-#footer {
-  background-color: #757575;
-  padding: 40px 0px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#footer .footer_content {
-  font-weight: 700;
-  color: white;
-}
-
-#scroller .scroll_btn:hover {
-  opacity: 1;
+  color: #757575;
 }

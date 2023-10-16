@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>訂單頁面</title>
     <link rel="stylesheet" href="{{url_for('static', filename='booking.css')}}">
   </head>
-  <body> 
+  <body class="disable-scroll">
     <div id="page-booking">
       <div class="psuedo">
         <div id="navbar">
@@ -15,12 +15,15 @@
             <div class="navbar_options">
               <div class="navbar_option booking">預定行程</div>
               <div class="navbar_option sign">登入/註冊</div>
-              <div class="navbar_option signout inactive">登出</div>
+              <div class="navbar_option signout inactive" style="display: none">登出</div>
+              <div class="navbar_option dashboard inactive"> <a href="/dashboard">會員中心</a></div>
             </div>
           </div>
         </div>
       </div>
       <script src="{{ url_for('static', filename='/scripts/nav.js') }}" type="module"></script>
+      <div class="bounce active" id="loading"><span>n</span><span>o</span><span>w </span><span>&nbsp;</span><span>l</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span><span>.</span><span>.</span><span>.</span></div>
+      <script src="{{ url_for('static', filename='/scripts/nowLoading.js') }}" type="module"></script>
       <div class="filter"></div>
       <div class="box_container">
         <div class="signin" id="box">
@@ -60,15 +63,15 @@
           <form class="contact">
             <div class="wrapper">
               <label for="">聯絡姓名：</label>
-              <input name="name" value="嗙" required>
+              <input name="name" required>
             </div>
             <div class="wrapper">
               <label for="">連絡信箱：</label>
-              <input name="email" value="test@admin" required>
+              <input name="email" required>
             </div>
             <div class="wrapper">
               <label for="">手機號碼：</label>
-              <input name="phone" value="0900000000" required>
+              <input name="phone" placeholder="聯絡用電話號碼" required>
             </div>
             <div class="hint">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
           </form>
