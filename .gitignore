@@ -112,6 +112,7 @@ venv/
 ENV/
 env.bak/
 .env*
+!.env.sample
 venv.bak/
 
 # Spyder project settings
