@@ -8,8 +8,8 @@ load_dotenv()
 
 import mysql.connector as connector
 dbconfig = {
-	"host": "localhost",
-	"user": "root",
+	"host": os.environ.get("DB_HOST"),
+	"user": os.environ.get("DB_USER"),
 	"password": os.environ.get("DB_PASSWORD"),
 	"database": "wehelp",
 	"pool_name": "pool",
