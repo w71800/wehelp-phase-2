@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template
 
 from api.attractions import attractions_blueprint
@@ -47,4 +48,6 @@ def thankyou():
 def dashboard():
 	return render_template("dashboard.html")
 
-app.run(host="0.0.0.0", port=3000, debug=True)
+
+port = int(os.environ.get("PORT", 8080))
+app.run(host="0.0.0.0", port=port, debug=True)
