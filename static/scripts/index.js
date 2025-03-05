@@ -93,7 +93,7 @@ function getData(page, keyword){
     if(page == null) return
 
     let queryStr = keyword ? `page=${ page }&keyword=${keyword}` : `page=${ page }`
-    let url = "/api/attractions?" + queryStr
+    let url = `https://${window.location.host}/api/attractions?` + queryStr // 在測試環境中，需要關掉 HTTPs
     
     return fetch(url)
       .then( res => {
