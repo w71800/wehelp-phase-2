@@ -29,6 +29,7 @@ for blueprint in blueprints:
 
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
+app.config['PREFERRED_URL_SCHEME'] = 'https'
 
 
 # Pages
