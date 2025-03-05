@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 
 from api.attractions import attractions_blueprint
 from api.attraction_id import attractions_id_blueprint
@@ -11,6 +11,7 @@ from api.order import order_blueprint
 from api.order_number import order_number_blueprint
 from api.orders import orders_blueprint
 
+# os.environ.setdefault("FLASK_ENV", "development")
 blueprints = [
 	attractions_blueprint,
 	attractions_id_blueprint,

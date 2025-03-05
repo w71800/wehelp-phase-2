@@ -93,7 +93,7 @@ function getData(page, keyword){
     if(page == null) return
 
     let queryStr = keyword ? `page=${ page }&keyword=${keyword}` : `page=${ page }`
-    let url = "api/attractions?" + queryStr
+    let url = "/api/attractions?" + queryStr
     
     return fetch(url)
       .then( res => {
