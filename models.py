@@ -14,7 +14,7 @@ dbconfig = {
 	"database": "wehelp",
 	"pool_name": "pool",
 	"pool_size": 5,
-
+	"port": os.environ.get("DB_PORT"),
 }
 # 建立一個 pool
 connection_pool = connector.pooling.MySQLConnectionPool(**dbconfig)
